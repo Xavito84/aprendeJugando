@@ -22,29 +22,15 @@
   </header>
 
   <div class="container">
-    <h1>👋 ¡Hola <span id="nombreUsuario"></span>!</h1>
-    <h2>Bienvenido al Nivel 3 años</h2>
+    <h1>Juego Memory Fácil</h1>
+    <div id="memory-board"></div>
+    <div id="message"></div>
 
-    <div id="progreso">
-      <p>Tu progreso:</p>
-      <ul>
-        <li>Colores: <span id="progreso-colores">❌</span></li>
-        <li>Formas: <span id="progreso-formas">❌</span></li>
-        <li>Letras: <span id="progreso-letras">❌</span></li>  
-      </ul>
-    </div>
-
-    <h3>Elige un juego para empezar:</h3>
-<button onclick="irAJuego('colores')">🎨 Colores</button>
-<button onclick="irAJuego('formas')">🔺 Formas</button>
-<button onclick="irAJuego('letras')">🔤 Letras</button>  
-
-
-    <br /><br />
-    <button onclick="cerrarSesion()">Cerrar sesión</button>
+    <button id="btnReiniciar">Volver a empezar</button>
+    <audio id="aplauso" src="../assets/audio/aplauso.mp3" preload="auto"></audio>
   </div>
 
-  <script src="../js/nivel3.js"></script>
+  <script src="../js/memory-3.js"></script>
 
   <footer>
     <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>
@@ -52,3 +38,5 @@
 </body>
 
 </html>
+
+

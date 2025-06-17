@@ -8,13 +8,15 @@ const claveProgreso = 'progresoNivel3_' + nombre;
 // Cargar progreso específico del usuario o crear nuevo
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   colores: false,
-  formas: false
+  formas: false,
+  letras: false
 };
 
 // Actualizar visualmente el progreso
 function actualizarProgreso() {
   document.getElementById('progreso-colores').textContent = progreso.colores ? '✅' : '❌';
   document.getElementById('progreso-formas').textContent = progreso.formas ? '✅' : '❌';
+  document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
 }
 actualizarProgreso();
 

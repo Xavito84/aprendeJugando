@@ -14,6 +14,7 @@ const items = [
 let currentLetter = null;
 let correctItem = null;
 let letrasUsadas = [];
+let aciertos = 0; // contador de respuestas correctas
 
 const sonidoAplauso = document.getElementById('aplauso');
 
@@ -35,16 +36,39 @@ function elegirNuevaLetra() {
   return disponibles[Math.floor(Math.random() * disponibles.length)];
 }
 
-function nextQuestion() {
+function mostrarPregunta() {
   const feedback = document.getElementById('mensaje');
   feedback.textContent = '';
 
-  const nuevaLetra = elegirNuevaLetra();
-  if (!nuevaLetra) {
+  // Si ya respondió 10 letras, termina el juego
+  if (aciertos >= 10) {
     document.getElementById('letraActual').textContent = '';
     document.getElementById('pregunta').textContent = '';
     document.getElementById('opciones').innerHTML = '';
-    feedback.textContent = "🎉 ¡Has acertado todas las letras! 🎉";
+    feedback.textContent = "🎉 ¡Has acertado 10 letras! 🎉";
+    feedback.style.color = 'green';
+
+    // Guardar progreso en localStorage
+    const nombre = localStorage.getItem('usuario') || 'Peque';
+    const claveProgreso = 'progresoNivel3_' + nombre;
+    let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false };
+
+    progreso.letras = true;  // Marcar letras como completado
+
+    localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+
+    // Redirigir tras 2 segundos
+    setTimeout(() => {
+      window.location.href = '../niveles/nivel-3.html';
+    }, 2000);
+
+    return;
+  }
+
+  const nuevaLetra = elegirNuevaLetra();
+  if (!nuevaLetra) {
+    // No hay más letras disponibles, igual terminar
+    feedback.textContent = "🎉 ¡Has completado todas las letras disponibles! 🎉";
     feedback.style.color = 'green';
     return;
   }
@@ -67,7 +91,7 @@ function nextQuestion() {
   allOptions.forEach(option => {
     const div = document.createElement('div');
     div.className = 'option';
-    div.innerHTML = `<img src="${option.img}" alt="${option.word}" style="width: 220px; height: 180px; object-fit: cover; border-radius: 14px;">`;
+    div.innerHTML = `<img src="${option.img}" alt="${option.word}" style="width: 220px; height: 180px; object-fit: contain; border-radius: 14px;">`;
     div.onclick = () => checkAnswer(option.letter);
     optionsDiv.appendChild(div);
   });
@@ -83,12 +107,14 @@ function checkAnswer(selectedLetter) {
     feedback.style.color = 'green';
 
     letrasUsadas.push(currentLetter);
+    aciertos++; // sumamos un acierto
 
+    // Bloquear opciones para evitar doble clic
     const optionsDiv = document.getElementById('opciones');
     Array.from(optionsDiv.children).forEach(div => div.style.pointerEvents = 'none');
 
     setTimeout(() => {
-      nextQuestion();
+      mostrarPregunta();
     }, 1500);
   } else {
     feedback.textContent = 'Incorrecto. Intenta de nuevo.';
@@ -98,7 +124,8 @@ function checkAnswer(selectedLetter) {
 
 document.getElementById('btnReiniciar').onclick = () => {
   letrasUsadas = [];
-  nextQuestion();
+  aciertos = 0;
+  mostrarPregunta();
 };
 
-nextQuestion();
+mostrarPregunta();

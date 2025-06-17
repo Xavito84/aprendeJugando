@@ -332,13 +332,15 @@ select:focus {
   border-color: #ffcc80;
 }
 
-
 .option img {
-  width: 100%;
   height: 100%;
+  width: auto;
   object-fit: contain;
   display: block;
+  margin: 0 auto;
+  border-radius: 14px;
 }
+
 
 .feedback {
   margin-top: 25px;
@@ -362,6 +364,48 @@ select:focus {
 #btnReiniciar:hover {
   background-color: #ffa726;
 }
+
+
+
+/**Memory **/
+#memory-board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      grid-gap: 15px;
+      margin-top: 20px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #4caf50;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      user-select: none;
+    }
+    .card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      display: none;
+    }
+    .card.flipped {
+      background-color: #fff;
+      cursor: default;
+    }
+    .card.flipped img {
+      display: block;
+    }
+    #message {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #4caf50;
+    }
 
 
 footer {
