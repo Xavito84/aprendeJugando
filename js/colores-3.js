@@ -1,28 +1,21 @@
-const nombre = localStorage.getItem('usuario') || 'Peque';
-const claveProgreso = 'progresoNivel3_' + nombre;
-let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false };
-
-const colores = [
-  { nombre: "Rojo", color: "#e53935" },       
-  { nombre: "Azul", color: "#2196f3" },
-  { nombre: "Verde", color: "#4caf50" },
-  { nombre: "Amarillo", color: "#ffeb3b", texto: "#333" },
-  { nombre: "Naranja", color: "#ff9800" },
-  { nombre: "Lila", color: "#9c27b0" },
-  { nombre: "Rosa", color: "#ff4081" },       
-  { nombre: "Marrón", color: "#795548" },
-  { nombre: "Gris", color: "#9e9e9e", texto: "#333" },
-  { nombre: "Negro", color: "#000000" },
+const items = [
+  { letter: 'A', word: 'Avión', img: '../assets/img/avion.jpg' },
+  { letter: 'B', word: 'Barco', img: '../assets/img/barco.jpg' },
+  { letter: 'C', word: 'Conejo', img: '../assets/img/conejo.png' },
+  { letter: 'D', word: 'Delfín', img: '../assets/img/delfin.png' },
+  { letter: 'E', word: 'Elefante', img: '../assets/img/elefante.png' },
+  { letter: 'F', word: 'Fresa', img: '../assets/img/fresa.png' },
+  { letter: 'G', word: 'Gato', img: '../assets/img/gato.png' },
+  { letter: 'H', word: 'Helado', img: '../assets/img/helado.png' },
+  { letter: 'I', word: 'Indio', img: '../assets/img/indio.png' },
+  { letter: 'J', word: 'Jirafa', img: '../assets/img/jirafa.png' },
 ];
 
-let coloresDisponibles = [...colores]; // Clonamos los colores originales
+let currentLetter = null;
+let correctItem = null;
+let letrasUsadas = [];
 
 const sonidoAplauso = document.getElementById('aplauso');
-sonidoAplauso.volume = 1;
-sonidoAplauso.muted = false;
-
-let aciertos = 0;       
-const maxAciertos = 10; 
 
 window.addEventListener("click", () => {
   sonidoAplauso.play().catch(() => {});
@@ -33,72 +26,88 @@ function shuffle(array) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-  return array;
 }
 
-function nuevaPregunta() {
-  if (coloresDisponibles.length === 0 || aciertos >= maxAciertos) {
-    document.getElementById("mensaje").textContent = "¡Has completado el juego! Redirigiendo...";
-    setTimeout(() => {
-      progreso.colores = true;
-      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
-      window.location.href = '../niveles/nivel-3.html';
-    }, 2000);
+function elegirNuevaLetra() {
+  const disponibles = items.filter(item => !letrasUsadas.includes(item.letter));
+  if (disponibles.length === 0) return null;
+  return disponibles[Math.floor(Math.random() * disponibles.length)];
+}
+
+function nextQuestion() {
+  const feedback = document.getElementById('mensaje');
+  feedback.textContent = '';
+
+  const nuevaLetra = elegirNuevaLetra();
+  if (!nuevaLetra) {
+    document.getElementById('letraActual').textContent = '';
+    document.getElementById('pregunta').textContent = '';
+    document.getElementById('opciones').innerHTML = '';
+    feedback.textContent = "🎉 ¡Has acertado todas las letras! 🎉";
+    feedback.style.color = 'green';
     return;
   }
 
-  const colorObjetivo = coloresDisponibles[Math.floor(Math.random() * coloresDisponibles.length)];
-  const opciones = [colorObjetivo];
+  currentLetter = nuevaLetra.letter;
+  correctItem = nuevaLetra;
 
-  while (opciones.length < 3) {
-    const candidato = colores[Math.floor(Math.random() * colores.length)];
-    if (!opciones.some(c => c.nombre === candidato.nombre)) {
-      opciones.push(candidato);
-    }
-  }
+  document.getElementById('letraActual').textContent = currentLetter;
+  document.getElementById('pregunta').textContent = `¿Cuál palabra empieza con la letra ${currentLetter}?`;
 
-  shuffle(opciones);
+  let opcionesIncorrectas = items.filter(item => item.letter !== currentLetter);
+  shuffle(opcionesIncorrectas);
+  opcionesIncorrectas = opcionesIncorrectas.slice(0, 2);
 
-  document.querySelector("p").innerHTML = `¿Cuál es el color <strong>${colorObjetivo.nombre.toLowerCase()}</strong>? ¡Toca la opción correcta!`;
+  let allOptions = [correctItem, ...opcionesIncorrectas];
+  shuffle(allOptions);
 
-  const opcionesDiv = document.getElementById("opciones");
-  opcionesDiv.innerHTML = "";
+  const optionsDiv = document.getElementById('opciones');
+  optionsDiv.innerHTML = '';
+  allOptions.forEach(option => {
+    const div = document.createElement('div');
+    div.className = 'option';
 
-  opciones.forEach(opc => {
-    const div = document.createElement("div");
-    div.className = "opcion";
-    div.dataset.color = opc.nombre.toLowerCase();
-    div.style.backgroundColor = opc.color;
-    div.textContent = "";
-    div.setAttribute("aria-label", opc.nombre);
+    const img = document.createElement('img');
+    img.src = option.img;
+    img.alt = option.word;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
+    img.style.borderRadius = '14px';
+    img.style.display = 'block';
 
-    div.onclick = () => {
-      if (opc.nombre === colorObjetivo.nombre) {
-        aciertos++;
-        document.getElementById("mensaje").textContent = `¡Correcto! Aciertos: ${aciertos}/${maxAciertos}`;
-        sonidoAplauso.currentTime = 0;
-        sonidoAplauso.play().catch(e => console.log("Error al reproducir audio:", e));
-
-        coloresDisponibles = coloresDisponibles.filter(c => c.nombre !== colorObjetivo.nombre);
-
-        Array.from(opcionesDiv.children).forEach(child => child.style.pointerEvents = "none");
-
-        setTimeout(() => {
-          nuevaPregunta();
-        }, 1500);
-      } else {
-        document.getElementById("mensaje").textContent = "Intenta de nuevo.";
-      }
-    };
-
-    opcionesDiv.appendChild(div);
+    div.appendChild(img);
+    div.onclick = () => checkAnswer(option.letter);
+    optionsDiv.appendChild(div);
   });
-
-  document.getElementById("mensaje").textContent = "";
 }
 
-document.getElementById("btnVolver").onclick = () => {
-  window.location.href = "../niveles/nivel-3.html";
+function checkAnswer(selectedLetter) {
+  const feedback = document.getElementById('mensaje');
+  if (selectedLetter === currentLetter) {
+    sonidoAplauso.currentTime = 0;
+    sonidoAplauso.play();
+
+    feedback.textContent = `¡Correcto! ${correctItem.word} empieza por ${currentLetter}.`;
+    feedback.style.color = 'green';
+
+    letrasUsadas.push(currentLetter);
+
+    const optionsDiv = document.getElementById('opciones');
+    Array.from(optionsDiv.children).forEach(div => div.style.pointerEvents = 'none');
+
+    setTimeout(() => {
+      nextQuestion();
+    }, 1500);
+  } else {
+    feedback.textContent = 'Incorrecto. Intenta de nuevo.';
+    feedback.style.color = 'red';
+  }
+}
+
+document.getElementById('btnReiniciar').onclick = () => {
+  letrasUsadas = [];
+  nextQuestion();
 };
 
-nuevaPregunta();
+nextQuestion();
