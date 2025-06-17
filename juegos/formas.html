@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sitio web educativo para niños de 3 a 6 años: AprendeJugando">
+  <title>AprendeJugando</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <header>
+    <h1>AprendeJugando</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../pages/inicio.html">Juegos</a></li>
+        <li><a href="../pages/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>🔷 Adivina la forma</h1>
+    <div id="pregunta">¿Cuál es el triángulo?</div>
+    
+    <div id="opciones"></div>
+    <div id="mensaje"></div>
+    <button id="btnReiniciar">Volver a empezar</button>
+    <audio id="aplauso" src="../assets/audio/aplauso.mp3" preload="auto"></audio>
+  </div>
+
+  <script src="../js/formas-3.js"></script>
+
+  <footer>
+    <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>
+  </footer>
+</body>
+
+</html>

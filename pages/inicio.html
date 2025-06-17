@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sitio web educativo para niños de 3 a 6 años: AprendeJugando">
+  <title>AprendeJugando</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <header>
+    <h1>AprendeJugando</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="inicio.html">Juegos</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>🎉 Aprende Jugando</h1>
+    <label for="nombreInput">¿Cómo te llamas?</label>
+    <input type="text" id="nombreInput" placeholder="Escribe tu nombre" />
+
+    <label for="edadSelect">¿Cuántos años tienes?</label>
+    <select id="edadSelect">
+      <option value="" disabled selected>Selecciona tu edad</option>
+      <option value="3">3 años</option>
+      <option value="4">4 años</option>
+      <option value="5">5 años</option>
+      <option value="6">6 años</option>
+    </select>
+
+    <button id="btnStart">Comenzar</button>
+  </div>
+
+  <script src="../app.js"></script>
+
+  <footer>
+    <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>
+  </footer>
+</body>
+
+</html>
