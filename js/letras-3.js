@@ -2,13 +2,13 @@
         { letter: 'A', word: 'Avión', img: '../assets/img/avion.jpg' },
         { letter: 'B', word: 'Barco', img: '../assets/img/barco.jpg' },
         { letter: 'C', word: 'Conejo', img: '../assets/img/conejo.png' },
-        { letter: 'D', word: 'Delfín', img: 'https://cdn.pixabay.com/photo/2013/07/12/18/39/dolphin-153812_1280.png' },
-        { letter: 'E', word: 'Elefante', img: 'https://cdn.pixabay.com/photo/2012/04/01/17/30/elephant-23680_1280.png' },
-        { letter: 'F', word: 'Fresa', img: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/strawberry-1239425_1280.jpg' },
-        { letter: 'G', word: 'Gato', img: 'https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_1280.jpg' },
-        { letter: 'H', word: 'Helado', img: 'https://cdn.pixabay.com/photo/2014/12/21/23/28/ice-cream-579693_1280.png' },
-        { letter: 'I', word: 'Iglesia', img: 'https://cdn.pixabay.com/photo/2016/03/27/19/40/church-1280107_1280.jpg' },
-        { letter: 'J', word: 'Jirafa', img: 'https://cdn.pixabay.com/photo/2013/07/13/12/46/giraffe-146609_1280.png' },
+        { letter: 'D', word: 'Delfín', img: '../assets/img/delfin.png' },
+        { letter: 'E', word: 'Elefante', img: '../assets/img/elefante.png' },
+        { letter: 'F', word: 'Fresa', img: '../assets/img/fresa.png' },
+        { letter: 'G', word: 'Gato', img: '../assets/img/gato.png' },
+        { letter: 'H', word: 'Helado', img: '../assets/img/helado.png' },
+        { letter: 'I', word: 'Indio', img: '../assets/img/indio.png' },
+        { letter: 'J', word: 'Jirafa', img: '../assets/img/jirafa.png' },
         ];
 
         let currentLetter = null;
