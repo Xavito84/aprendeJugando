@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
       valido = false;
     }
 
-    // Validar email con expresión regular
+    // Validar email 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.value.trim())) {
       mostrarError(email, "Introduce un correo electrónico válido.");

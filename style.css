@@ -105,6 +105,10 @@ main {
   margin: 20px 0;
   padding: 0 20px;
 }
+#inicio {
+  margin: 20px;
+  padding: 20px;
+}
 
 .container {
   background: var(--color-blanco);
