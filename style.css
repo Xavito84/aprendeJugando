@@ -143,6 +143,18 @@ main {
   padding-left: 1em;
   list-style: none;
 }
+.container button {
+  margin: 10px;
+}
+
+.container .juegos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
 
 button {
   background-color: var(--color-primario);
