@@ -1,15 +1,13 @@
-const items = [
-  { letter: 'A', word: 'Avión', img: '../assets/img/avion.jpg' },
-  { letter: 'B', word: 'Barco', img: '../assets/img/barco.jpg' },
-  { letter: 'C', word: 'Conejo', img: '../assets/img/conejo.png' },
-  { letter: 'D', word: 'Delfín', img: '../assets/img/delfin.png' },
-  { letter: 'E', word: 'Elefante', img: '../assets/img/elefante.png' },
-  { letter: 'F', word: 'Fresa', img: '../assets/img/fresa.png' },
-  { letter: 'G', word: 'Gato', img: '../assets/img/gato.png' },
-  { letter: 'H', word: 'Helado', img: '../assets/img/helado.png' },
-  { letter: 'I', word: 'Indio', img: '../assets/img/indio.png' },
-  { letter: 'J', word: 'Jirafa', img: '../assets/img/jirafa.png' },
-];
+let items = [];
+
+fetch('../data/datos-letras.json')
+  .then(response => response.json())
+  .then(data => {
+    items = data;
+    iniciarJuego(); // o nextQuestion()
+  })
+  .catch(error => console.error('Error cargando JSON:', error));
+
 
 let currentLetter = null;
 let correctItem = null;

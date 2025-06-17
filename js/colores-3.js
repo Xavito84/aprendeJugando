@@ -1,21 +1,20 @@
-const items = [
-  { letter: 'A', word: 'Avión', img: '../assets/img/avion.jpg' },
-  { letter: 'B', word: 'Barco', img: '../assets/img/barco.jpg' },
-  { letter: 'C', word: 'Conejo', img: '../assets/img/conejo.png' },
-  { letter: 'D', word: 'Delfín', img: '../assets/img/delfin.png' },
-  { letter: 'E', word: 'Elefante', img: '../assets/img/elefante.png' },
-  { letter: 'F', word: 'Fresa', img: '../assets/img/fresa.png' },
-  { letter: 'G', word: 'Gato', img: '../assets/img/gato.png' },
-  { letter: 'H', word: 'Helado', img: '../assets/img/helado.png' },
-  { letter: 'I', word: 'Indio', img: '../assets/img/indio.png' },
-  { letter: 'J', word: 'Jirafa', img: '../assets/img/jirafa.png' },
-];
+const nombre = localStorage.getItem('usuario') || 'Peque';
+const claveProgreso = 'progresoNivel3_' + nombre;
+let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+  colores: false,
+  formas: false,
+  letras: false,
+  memory: false
+};
 
-let currentLetter = null;
-let correctItem = null;
-let letrasUsadas = [];
+let items = [];
+let coloresDisponibles = [];
+let aciertos = 0;
+const maxAciertos = 10;
 
 const sonidoAplauso = document.getElementById('aplauso');
+sonidoAplauso.volume = 1;
+sonidoAplauso.muted = false;
 
 window.addEventListener("click", () => {
   sonidoAplauso.play().catch(() => {});
@@ -26,88 +25,81 @@ function shuffle(array) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }
 
-function elegirNuevaLetra() {
-  const disponibles = items.filter(item => !letrasUsadas.includes(item.letter));
-  if (disponibles.length === 0) return null;
-  return disponibles[Math.floor(Math.random() * disponibles.length)];
-}
-
-function nextQuestion() {
-  const feedback = document.getElementById('mensaje');
-  feedback.textContent = '';
-
-  const nuevaLetra = elegirNuevaLetra();
-  if (!nuevaLetra) {
-    document.getElementById('letraActual').textContent = '';
-    document.getElementById('pregunta').textContent = '';
-    document.getElementById('opciones').innerHTML = '';
-    feedback.textContent = "🎉 ¡Has acertado todas las letras! 🎉";
-    feedback.style.color = 'green';
+function nuevaPregunta() {
+  if (coloresDisponibles.length === 0 || aciertos >= maxAciertos) {
+    document.getElementById("mensaje").textContent = "🎉 ¡Has completado el juego! Redirigiendo...";
+    setTimeout(() => {
+      progreso.colores = true;
+      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+      window.location.href = '../niveles/nivel-3.html';
+    }, 2000);
     return;
   }
 
-  currentLetter = nuevaLetra.letter;
-  correctItem = nuevaLetra;
+  const colorObjetivo = coloresDisponibles[Math.floor(Math.random() * coloresDisponibles.length)];
+  const opciones = [colorObjetivo];
 
-  document.getElementById('letraActual').textContent = currentLetter;
-  document.getElementById('pregunta').textContent = `¿Cuál palabra empieza con la letra ${currentLetter}?`;
-
-  let opcionesIncorrectas = items.filter(item => item.letter !== currentLetter);
-  shuffle(opcionesIncorrectas);
-  opcionesIncorrectas = opcionesIncorrectas.slice(0, 2);
-
-  let allOptions = [correctItem, ...opcionesIncorrectas];
-  shuffle(allOptions);
-
-  const optionsDiv = document.getElementById('opciones');
-  optionsDiv.innerHTML = '';
-  allOptions.forEach(option => {
-    const div = document.createElement('div');
-    div.className = 'option';
-
-    const img = document.createElement('img');
-    img.src = option.img;
-    img.alt = option.word;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'contain';
-    img.style.borderRadius = '14px';
-    img.style.display = 'block';
-
-    div.appendChild(img);
-    div.onclick = () => checkAnswer(option.letter);
-    optionsDiv.appendChild(div);
-  });
-}
-
-function checkAnswer(selectedLetter) {
-  const feedback = document.getElementById('mensaje');
-  if (selectedLetter === currentLetter) {
-    sonidoAplauso.currentTime = 0;
-    sonidoAplauso.play();
-
-    feedback.textContent = `¡Correcto! ${correctItem.word} empieza por ${currentLetter}.`;
-    feedback.style.color = 'green';
-
-    letrasUsadas.push(currentLetter);
-
-    const optionsDiv = document.getElementById('opciones');
-    Array.from(optionsDiv.children).forEach(div => div.style.pointerEvents = 'none');
-
-    setTimeout(() => {
-      nextQuestion();
-    }, 1500);
-  } else {
-    feedback.textContent = 'Incorrecto. Intenta de nuevo.';
-    feedback.style.color = 'red';
+  while (opciones.length < 3) {
+    const candidato = items[Math.floor(Math.random() * items.length)];
+    if (!opciones.some(c => c.nombre === candidato.nombre)) {
+      opciones.push(candidato);
+    }
   }
+
+  shuffle(opciones);
+
+  document.querySelector("p").innerHTML = `¿Cuál es el color <strong>${colorObjetivo.nombre.toLowerCase()}</strong>? ¡Toca la opción correcta!`;
+
+  const opcionesDiv = document.getElementById("opciones");
+  opcionesDiv.innerHTML = "";
+
+  opciones.forEach(opc => {
+    const div = document.createElement("div");
+    div.className = "opcion";
+    div.dataset.color = opc.nombre.toLowerCase();
+    div.style.backgroundColor = opc.color;
+    div.textContent = ""; // o opc.nombre si deseas mostrar el nombre
+    if (opc.texto) div.style.color = opc.texto;
+    div.setAttribute("aria-label", opc.nombre);
+
+    div.onclick = () => {
+      if (opc.nombre === colorObjetivo.nombre) {
+        aciertos++;
+        document.getElementById("mensaje").textContent = `✅ ¡Correcto! Aciertos: ${aciertos}/${maxAciertos}`;
+        sonidoAplauso.currentTime = 0;
+        sonidoAplauso.play().catch(e => console.log("Error al reproducir audio:", e));
+
+        coloresDisponibles = coloresDisponibles.filter(c => c.nombre !== colorObjetivo.nombre);
+
+        Array.from(opcionesDiv.children).forEach(child => child.style.pointerEvents = "none");
+
+        setTimeout(() => {
+          nuevaPregunta();
+        }, 1500);
+      } else {
+        document.getElementById("mensaje").textContent = "❌ Intenta de nuevo.";
+      }
+    };
+
+    opcionesDiv.appendChild(div);
+  });
+
+  document.getElementById("mensaje").textContent = "";
 }
 
-document.getElementById('btnReiniciar').onclick = () => {
-  letrasUsadas = [];
-  nextQuestion();
+document.getElementById("btnVolver").onclick = () => {
+  window.location.href = "../niveles/nivel-3.html";
 };
 
-nextQuestion();
+// Carga los datos y empieza el juego
+fetch('../data/datos-colores.json')
+  .then(response => response.json())
+  .then(data => {
+    items = data;
+    coloresDisponibles = [...items]; // inicializar después de la carga
+    nuevaPregunta();
+  })
+  .catch(error => console.error('Error cargando JSON:', error));
