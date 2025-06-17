@@ -42,7 +42,7 @@ function mostrarPregunta() {
   if (formasRestantes.length < 1 || aciertos >= totalAciertos) {
   mensaje.innerHTML = `<strong>🎉 ¡Completaste el juego!</strong><br/>Redirigiendo...`;
   setTimeout(() => {
-    localStorage.setItem(claveProgreso, JSON.stringify({ colores: true, formas: true }));
+    localStorage.setItem(claveProgreso, JSON.stringify({ colores: true, formas: true, letras: false, memory: false }));
     window.location.href = '../niveles/nivel-3.html';
   }, 2000);
   return;

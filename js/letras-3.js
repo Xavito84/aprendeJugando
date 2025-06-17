@@ -51,7 +51,7 @@ function mostrarPregunta() {
     // Guardar progreso en localStorage
     const nombre = localStorage.getItem('usuario') || 'Peque';
     const claveProgreso = 'progresoNivel3_' + nombre;
-    let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false };
+    let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false, memory: false };
 
     progreso.letras = true;  // Marcar letras como completado
 

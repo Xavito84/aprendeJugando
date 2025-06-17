@@ -14,7 +14,7 @@
   --color-shadow: rgba(247, 183, 51, 0.6);
 
 
-  
+
   /* Tipografías */
   --font-primary: 'Poppins', 'Comic Sans MS', cursive, sans-serif;
 
@@ -62,7 +62,7 @@ header h1 {
   font-size: var(--font-size-xl);
   color: var(--color-blanco);
   letter-spacing: 2px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   font-weight: 800;
   margin-bottom: 2rem;
 }
@@ -84,7 +84,7 @@ nav a {
   background: rgba(255 255 255 / 0.2);
   transition: background-color 0.3s ease, transform 0.25s ease;
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 nav a:hover,
@@ -105,6 +105,7 @@ main {
   margin: 20px 0;
   padding: 0 20px;
 }
+
 #inicio {
   margin: 20px;
   padding: 20px;
@@ -117,7 +118,7 @@ main {
   margin: 3rem auto 5rem;
   padding: 2.5rem 3rem;
   border-radius: var(--radius-xl);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   text-align: center;
   user-select: none;
 }
@@ -266,7 +267,7 @@ select:focus {
   outline: none;
 }
 
-#btnVolver{
+#btnVolver {
   color: var(--color-texto);
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
@@ -315,7 +316,7 @@ select:focus {
   height: 180px;
   background-color: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 10px;
   cursor: pointer;
   display: flex;
@@ -368,44 +369,76 @@ select:focus {
 
 
 /**Memory **/
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 #memory-board {
-      display: grid;
-      grid-template-columns: repeat(4, 100px);
-      grid-gap: 15px;
-      margin-top: 20px;
-    }
-    .card {
-      width: 100px;
-      height: 100px;
-      background-color: #4caf50;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      user-select: none;
-    }
-    .card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 8px;
-      display: none;
-    }
-    .card.flipped {
-      background-color: #fff;
-      cursor: default;
-    }
-    .card.flipped img {
-      display: block;
-    }
-    #message {
-      margin-top: 25px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #4caf50;
-    }
+  display: grid;
+  grid-template-columns: repeat(3, 110px);
+  grid-template-rows: repeat(2, 110px);
+  grid-gap: 15px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.card {
+  width: 110px;
+  height: 110px;
+  background-color: #4caf50;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  display: none;
+}
+
+.card.flipped {
+  background-color: #fff;
+  cursor: default;
+}
+
+.card.flipped img {
+  display: block;
+}
+
+#message {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+#reset-btn {
+  margin-top: 25px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffb74d;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#reset-btn:hover {
+  background-color: #ffa726;
+}
+
 
 
 footer {
