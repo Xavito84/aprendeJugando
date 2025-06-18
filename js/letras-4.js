@@ -5,7 +5,7 @@ const lettersContainer = document.getElementById('lettersContainer');
 let currentIndex = 0;
 let data = [];
 
-fetch('data.json')
+fetch('../data/datos-letras-4.json')
   .then(response => response.json())
   .then(json => {
     data = json;
