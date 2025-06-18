@@ -10,7 +10,8 @@ let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   colores: false,
   formas: false,
   letras: false,
-  memory: false
+  memory: false,
+  contar: false
 };
 
 // Actualizar visualmente el progreso
@@ -19,6 +20,7 @@ function actualizarProgreso() {
   document.getElementById('progreso-formas').textContent = progreso.formas ? '✅' : '❌';
   document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
   document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
+  document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
 }
 actualizarProgreso();
 

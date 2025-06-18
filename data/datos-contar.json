@@ -1,0 +1,5 @@
+[
+  { "nombre": "manzanas", "imagen": "../assets/img/manzana.png", "min": 1, "max": 10 },
+  { "nombre": "pelotas",  "imagen": "../assets/img/pelota.png",  "min": 1, "max": 10 },
+  { "nombre": "estrellas","imagen": "../assets/img/estrella.png","min": 1, "max": 10 }
+]
