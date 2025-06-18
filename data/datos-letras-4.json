@@ -1,0 +1,38 @@
+[
+  {
+    "image": "./../assets/img/manzana.png",
+    "word": "manzana",
+    "correct": "M",
+    "options": ["M", "L", "P"]
+  },
+  {
+    "image": "./../assets/img/gato.png",
+    "word": "gato",
+    "correct": "G",
+    "options": ["G", "C", "R"]
+  },
+  {
+    "image": "./../assets/img/perro.png",
+    "word": "perro",
+    "correct": "P",
+    "options": ["P", "G", "M"]
+  },
+  {
+    "image": "./../assets/img/estrella.png",
+    "word": "estrella",
+    "correct": "E",
+    "options": ["E", "A", "S"]
+  },
+  {
+    "image": "./../assets/img/sol.png",
+    "word": "sol",
+    "correct": "S",
+    "options": ["S", "L", "T"]
+  },
+  {
+    "image": "./../assets/img/luna.png",
+    "word": "luna",
+    "correct": "L",
+    "options": ["L", "M", "N"]
+  }
+]

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Arrastra la letra correcta</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f0f8ff;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .image {
+      width: 200px;
+    }
+    .dropzone {
+      width: 100px;
+      height: 100px;
+      margin: 20px auto;
+      border: 2px dashed #ccc;
+      line-height: 100px;
+      font-size: 24px;
+      color: #888;
+    }
+    .letters {
+      margin-top: 20px;
+    }
+    .letter {
+      display: inline-block;
+      margin: 10px;
+      padding: 20px;
+      font-size: 24px;
+      background-color: #add8e6;
+      cursor: grab;
+      border-radius: 8px;
+    }
+    .correct {
+      background-color: #90ee90 !important;
+    }
+    .incorrect {
+      background-color: #ffcccb !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué letra empieza esta palabra?</h1>
+    <img id="image" src="" alt="Imagen" class="image">
+    <div id="dropzone" class="dropzone">Suelta aquí</div>
+    <div class="letters" id="lettersContainer"></div>
+  </div>
+
+  <script src="../js/letras-4.js"></script>
+</body>
+</html>

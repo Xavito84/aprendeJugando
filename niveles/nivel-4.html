@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sitio web educativo para niños de 3 a 6 años: AprendeJugando">
+  <title>AprendeJugando</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <header>
+    <h1>AprendeJugando</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../pages/inicio.html">Juegos</a></li>
+        <li><a href="../pages/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>👋 ¡Hola <span id="nombreUsuario"></span>!</h1>
+    <h2>Bienvenido al Nivel 4 a 5 años</h2>
+
+    <div id="progreso">
+      <p>Tu progreso:</p>
+      <ul>
+        
+        <li>Letras: <span id="progreso-letras">❌</span></li>
+        
+      </ul>
+    </div>
+
+    <h3>Elige un juego para empezar:</h3>
+    <div class="juegos">
+     
+      
+      <button class="boton-juego" onclick="irAJuego('letras')">🔤 Letras</button>
+      <
+    </div>
+
+    <br /><br />
+    <button onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+
+  <script src="../js/nivel4.js"></script>
+
+  <footer>
+    <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>
+  </footer>
+</body>
+
+</html>
