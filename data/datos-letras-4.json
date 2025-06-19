@@ -34,5 +34,77 @@
     "word": "luna",
     "correct": "L",
     "options": ["L", "M", "N"]
-  }
+  },
+  {
+    "image": "./../assets/img/pez.png",
+    "word": "pez",
+    "correct": "P",
+    "options": ["P", "Z", "R"]
+  },
+  {
+    "image": "./../assets/img/casa.png",
+    "word": "casa",
+    "correct": "C",
+    "options": ["C", "S", "A"]
+  },
+  {
+    "image": "./../assets/img/arbol.png",
+    "word": "árbol",
+    "correct": "A",
+    "options": ["A", "B", "R"]
+  },
+  {
+    "image": "./../assets/img/mesa.png",
+    "word": "mesa",
+    "correct": "M",
+    "options": ["M", "S", "L"]
+  },
+  {
+    "image": "./../assets/img/nube.png",
+    "word": "nube",
+    "correct": "N",
+    "options": ["N", "B", "E"]
+  },
+    {
+        "image": "./../assets/img/raton.png",
+        "word": "ratón",
+        "correct": "R",
+        "options": ["R", "T", "N"]
+    },
+    {
+        "image": "./../assets/img/ballena.png",
+        "word": "ballena",
+        "correct": "B",
+        "options": ["B", "L", "H"]
+    },
+    {
+        "image": "./../assets/img/elefante.png",
+        "word": "elefante",
+        "correct": "E",
+        "options": ["E", "F", "T"]
+    },
+    {
+        "image": "./../assets/img/avion.png",
+        "word": "avión",
+        "correct": "A",
+        "options": ["A", "V", "I"]
+    },
+    {
+        "image": "./../assets/img/telefono.png",
+        "word": "teléfono",
+        "correct": "T",
+        "options": ["T", "L", "P"]
+    },
+    {
+        "image": "./../assets/img/coche.png",
+        "word": "coche",
+        "correct": "C",
+        "options": ["C", "H", "O"]
+    },
+    {
+        "image": "./../assets/img/puerta.png",
+        "word": "puerta",
+        "correct": "P",
+        "options": ["P", "D", "R"]
+    }
 ]

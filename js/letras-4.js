@@ -29,10 +29,18 @@ function loadItem(index) {
     lettersContainer.appendChild(letterEl);
   });
 
-  dropzone.ondragover = e => e.preventDefault();
+  dropzone.ondragover = e => {
+    e.preventDefault();
+    dropzone.classList.add('dragover');
+  };
+
+  dropzone.ondragleave = e => {
+    dropzone.classList.remove('dragover');
+  };
 
   dropzone.ondrop = e => {
     e.preventDefault();
+    dropzone.classList.remove('dragover');
     const selected = e.dataTransfer.getData('text/plain');
     const letters = document.querySelectorAll('.letter');
     letters.forEach(letter => {
