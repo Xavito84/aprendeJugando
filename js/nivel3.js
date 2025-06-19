@@ -26,8 +26,21 @@ actualizarProgreso();
 
 // Función para ir al juego
 function irAJuego(juego) {
-  window.location.href = `../juegos/${juego}.html`;
+  const rutas = {
+    colores: 'colores.html',
+    formas: 'formas.html',
+    letras: 'letras.html',
+    memory: 'memory-3.html',  // Aquí defines la ruta correcta
+    contar: 'contar.html'
+  };
+
+  if (rutas[juego]) {
+    window.location.href = `../juegos/${rutas[juego]}`;
+  } else {
+    alert('Juego no disponible');
+  }
 }
+
 
 // Cerrar sesión: solo borra datos del usuario actual
 function cerrarSesion() {
