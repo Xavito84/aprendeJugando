@@ -21,8 +21,8 @@ let matchedPairs = 0;
 let cardsArray = [];
 
 function shuffle(array) {
-  for(let i = array.length -1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i+1));
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
@@ -51,13 +51,13 @@ function createBoard() {
     const img = document.createElement('img');
     img.src = imgSrc;
     img.alt = 'Imagen';
+    img.loading = 'lazy'; // ✅ Aquí se añade
 
     card.appendChild(img);
-
     card.addEventListener('click', () => flipCard(card));
-
     board.appendChild(card);
   });
+
 }
 
 function flipCard(card) {
@@ -98,7 +98,7 @@ function checkForMatch() {
       setTimeout(() => {
         window.location.href = '../niveles/nivel-3.html';
       }, 2000);
-      
+
     }
   } else {
     card1.classList.remove('flipped');

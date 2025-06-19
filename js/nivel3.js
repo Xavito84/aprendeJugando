@@ -30,7 +30,7 @@ function irAJuego(juego) {
     colores: 'colores.html',
     formas: 'formas.html',
     letras: 'letras.html',
-    memory: 'memory-3.html',  // Aquí defines la ruta correcta
+    memory: 'memory-3.html',  
     contar: 'contar.html'
   };
 
