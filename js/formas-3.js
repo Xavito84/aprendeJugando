@@ -116,4 +116,16 @@ function mostrarPregunta() {
   });
 }
 
+document.getElementById('btnVolver').onclick = () => {
+  window.location.href = '../niveles/nivel-3.html';
+};
+
 mostrarPregunta();
+
+// Botón para reiniciar el juego
+document.getElementById('btnReiniciar').onclick = () => {
+  aciertos = 0;
+  formasRestantes = [...formas];
+  mensaje.textContent = '';
+  mostrarPregunta();
+};

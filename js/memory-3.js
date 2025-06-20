@@ -111,3 +111,7 @@ function checkForMatch() {
 resetBtn.addEventListener('click', createBoard);
 
 document.addEventListener('DOMContentLoaded', createBoard);
+
+document.getElementById('btnVolver').onclick = () => {
+  window.location.href = '../niveles/nivel-3.html';
+};

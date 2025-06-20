@@ -103,3 +103,7 @@ fetch('../data/datos-colores.json')
     nuevaPregunta();
   })
   .catch(error => console.error('Error cargando JSON:', error));
+
+
+  
+  

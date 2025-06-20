@@ -4,9 +4,10 @@ fetch('../data/datos-letras.json')
   .then(response => response.json())
   .then(data => {
     items = data;
-    iniciarJuego(); // o nextQuestion()
+    mostrarPregunta(); 
   })
   .catch(error => console.error('Error cargando JSON:', error));
+
 
 
 let currentLetter = null;
@@ -126,4 +127,6 @@ document.getElementById('btnReiniciar').onclick = () => {
   mostrarPregunta();
 };
 
-mostrarPregunta();
+document.getElementById('btnVolver').onclick = () => {
+  window.location.href = '../niveles/nivel-3.html';
+};
