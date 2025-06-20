@@ -1,0 +1,40 @@
+#puzzle-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+#puzzle-board {
+  display: grid;
+  grid-template-columns: repeat(2, 120px);
+  grid-template-rows: repeat(2, 120px);
+  gap: 10px;
+  padding: 10px;
+  border: 2px dashed #ccc;
+}
+
+#puzzle-pieces {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pieza {
+  width: 120px;
+  height: 120px;
+  cursor: grab;
+  border: 1px solid #aaa;
+  background-color: #fff;
+}
+
+.drop-zone {
+  width: 120px;
+  height: 120px;
+  background-color: #f0f0f0;
+  border: 2px dashed #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
