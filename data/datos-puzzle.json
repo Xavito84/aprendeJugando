@@ -4,7 +4,8 @@
     "pieza1": "../assets/img/puzzle-perro-1.png",
     "pieza2": "../assets/img/puzzle-perro-2.png",
     "pieza3": "../assets/img/puzzle-perro-3.png",
-    "pieza4": "../assets/img/puzzle-perro-4.png"
+    "pieza4": "../assets/img/puzzle-perro-4.png",
+    "piezaTotal": "../assets/img/perro.png"
   }
 ]
 
