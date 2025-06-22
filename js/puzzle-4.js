@@ -81,9 +81,21 @@ function soltar(e) {
     }
 
     if (piezasColocadas === 4) {
-      mensaje.textContent = "🎉 ¡Puzzle completo!";
-      zonas.innerHTML = `<img src="${puzzleActual.completo}" class="final" alt="Puzzle completo">`;
-    }
+  mensaje.textContent = "🎉 ¡Bien hecho! Puzzle completado.";
+
+  const zonas = document.getElementById("zonaDestino");
+  zonas.innerHTML = ''; // vacía el grid
+  const finalImg = document.createElement("img");
+  finalImg.src = puzzleActual.completo;
+  finalImg.alt = "Puzzle completo";
+  finalImg.classList.add("final");
+  zonas.appendChild(finalImg);
+
+  setTimeout(() => {
+    window.location.href = "../niveles/nivel-4.html";
+  }, 3000);
+}
+
   }
 }
 
