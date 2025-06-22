@@ -1,47 +1,10 @@
 [
   {
-    "id": 1,
-    "nombre": "Elefante",
-    "pieza1": "../assets/img/puzzle-elefante-1.png",
-    "pieza2": "../assets/img/puzzle-elefante-2.png",
-    "pieza3": "../assets/img/puzzle-elefante-3.png",
-    "pieza4": "../assets/img/puzzle-elefante-4.png",
-    "imagenCompleta": "../assets/img/elefante.png"
-  },
-  {
-    "id": 2,
-    "nombre": "Gato",
-    "pieza1": "../assets/img/puzzle-gato-1.png",
-    "pieza2": "../assets/img/puzzle-gato-2.png",
-    "pieza3": "../assets/img/puzzle-gato-3.png",
-    "pieza4": "../assets/img/puzzle-gato-4.png",
-    "imagenCompleta": "../assets/img/gato.png"
-  },
-  {
-    "id": 3,
-    "nombre": "Conejo",
-    "pieza1": "../assets/img/puzzle-conejo-1.png",
-    "pieza2": "../assets/img/puzzle-conejo-2.png",
-    "pieza3": "../assets/img/puzzle-conejo-3.png",
-    "pieza4": "../assets/img/puzzle-conejo-4.png",
-    "imagenCompleta": "../assets/img/conejo.png"
-  },
-  {
-    "id": 4,
-    "nombre": "Perro",
+    "id": "perro",
     "pieza1": "../assets/img/puzzle-perro-1.png",
     "pieza2": "../assets/img/puzzle-perro-2.png",
     "pieza3": "../assets/img/puzzle-perro-3.png",
-    "pieza4": "../assets/img/puzzle-perro-4.png",
-    "imagenCompleta": "../assets/img/perro.png"
-  },
-  {
-    "id": 5,
-    "nombre": "Pájaro",
-    "pieza1": "../assets/img/puzzle-pajaro-1.png",
-    "pieza2": "../assets/img/puzzle-pajaro-2.png",
-    "pieza3": "../assets/img/puzzle-pajaro-3.png",
-    "pieza4": "../assets/img/puzzle-pajaro-4.png",
-    "imagenCompleta": "../assets/img/pajaro.png"
+    "pieza4": "../assets/img/puzzle-perro-4.png"
   }
 ]
+

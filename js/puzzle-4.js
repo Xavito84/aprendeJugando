@@ -1,6 +1,8 @@
 const contenedorPuzzle = document.getElementById("puzzle");
+const zonasDestino = document.getElementById("zonaDestino");
 const mensaje = document.getElementById("mensaje");
 const volverBtn = document.getElementById("btnVolver");
+const reiniciarBtn = document.getElementById("btnReiniciar");
 
 let puzzleActual = null;
 let piezasColocadas = 0;
@@ -18,71 +20,89 @@ fetch("../data/datos-puzzle.json")
   });
 
 function iniciarPuzzle(puzzle) {
+  contenedorPuzzle.innerHTML = "";
+  zonasDestino.innerHTML = "";
+  mensaje.textContent = "";
+  piezasColocadas = 0;
+
   const piezas = [
-    puzzle.pieza1,
-    puzzle.pieza2,
-    puzzle.pieza3,
-    puzzle.pieza4
+    { src: puzzle.pieza1, id: "1" },
+    { src: puzzle.pieza2, id: "2" },
+    { src: puzzle.pieza3, id: "3" },
+    { src: puzzle.pieza4, id: "4" }
   ];
 
   shuffle(piezas);
 
-  piezas.forEach((src, index) => {
+  // Crear piezas arrastrables
+  piezas.forEach(pieza => {
     const img = document.createElement("img");
-    img.src = src;
+    img.src = pieza.src;
     img.classList.add("pieza");
     img.setAttribute("draggable", "true");
-    img.dataset.pieza = index + 1;
-    img.addEventListener("dragstart", arrastrar);
+    img.dataset.pieza = pieza.id;
+
+    // Evento dragstart
+    img.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("pieza", pieza.id);
+      e.dataTransfer.setData("src", pieza.src);
+    });
+
     contenedorPuzzle.appendChild(img);
   });
 
   // Crear zonas destino
-  const zonas = document.getElementById("zonaDestino");
-  zonas.innerHTML = "";
   for (let i = 1; i <= 4; i++) {
-    const div = document.createElement("div");
-    div.classList.add("zona");
-    div.dataset.destino = i;
-    div.addEventListener("dragover", permitirSoltar);
-    div.addEventListener("drop", soltar);
-    zonas.appendChild(div);
+    const zona = document.createElement("div");
+    zona.classList.add("drop-zone");
+    zona.dataset.destino = i.toString();
+
+    zona.addEventListener("dragover", (e) => e.preventDefault());
+
+    zona.addEventListener("drop", (e) => {
+      e.preventDefault();
+
+      if (zona.hasChildNodes()) return;
+
+      const idPieza = e.dataTransfer.getData("pieza");
+      const src = e.dataTransfer.getData("src");
+
+      const img = document.createElement("img");
+      img.src = src;
+      zona.appendChild(img);
+
+      // Eliminar imagen de origen
+      const piezaOriginal = document.querySelector(`.pieza[data-pieza="${idPieza}"]`);
+      if (piezaOriginal) piezaOriginal.remove();
+
+      // Comprobación
+      if (idPieza === zona.dataset.destino) {
+        piezasColocadas++;
+      }
+
+      if (piezasColocadas === 4) {
+        mostrarImagenFinal();
+      }
+    });
+
+    zonasDestino.appendChild(zona);
   }
 }
 
-function arrastrar(e) {
-  e.dataTransfer.setData("text/plain", e.target.dataset.pieza);
-  e.dataTransfer.setDragImage(e.target, 30, 30);
-  e.dataTransfer.setData("src", e.target.src);
-}
+function mostrarImagenFinal() {
+  mensaje.textContent = "🎉 ¡Puzzle completado!";
+  zonasDestino.innerHTML = "";
 
-function permitirSoltar(e) {
-  e.preventDefault();
-}
+  const imgFinal = document.createElement("img");
+  imgFinal.src = "../assets/puzzle/perro.png";
+  imgFinal.style.width = "240px";
+  imgFinal.style.height = "240px";
+  imgFinal.style.borderRadius = "10px";
+  zonasDestino.appendChild(imgFinal);
 
-function soltar(e) {
-  e.preventDefault();
-  const piezaId = e.dataTransfer.getData("text/plain");
-  const src = e.dataTransfer.getData("src");
-  const destino = e.target;
-
-  if (!destino.hasChildNodes()) {
-    const img = document.createElement("img");
-    img.src = src;
-    img.classList.add("pieza-colocada");
-    destino.appendChild(img);
-
-    if (piezaId === destino.dataset.destino) {
-      piezasColocadas++;
-    }
-
-    if (piezasColocadas === 4) {
-      mensaje.textContent = "🎉 ¡Bien hecho! Puzzle completado.";
-      setTimeout(() => {
-        window.location.href = "../niveles/nivel-4.html";
-      }, 2000);
-    }
-  }
+  setTimeout(() => {
+    window.location.href = "../niveles/nivel-4.html";
+  }, 3000);
 }
 
 function shuffle(array) {
@@ -96,10 +116,6 @@ volverBtn.onclick = () => {
   window.location.href = "../niveles/nivel-4.html";
 };
 
-//boton reiniciar
-document.getElementById("btnReiniciar").onclick = () => {
-  contenedorPuzzle.innerHTML = "";
-  mensaje.textContent = "";
-  piezasColocadas = 0;
+reiniciarBtn.onclick = () => {
   iniciarPuzzle(puzzleActual);
 };
