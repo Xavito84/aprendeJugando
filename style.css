@@ -524,6 +524,53 @@ select:focus {
   color: white !important;
 }
 
+/**Puzzle **/
+.cuadro-puzzle {
+  display: grid;
+  grid-template-columns: repeat(2, 100px);
+  grid-template-rows: repeat(2, 100px);
+  gap: 10px;
+  margin: 20px auto;
+  width: 220px;
+  height: 220px;
+  border: 2px solid #333;
+  background-color: #eee;
+}
+
+.zona {
+  border: 2px dashed #aaa;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.piezas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pieza {
+  width: 100px;
+  height: 100px;
+  cursor: grab;
+}
+
+.pieza-colocada {
+  width: 100px;
+  height: 100px;
+}
+
+img.final {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: 20px auto;
+}
 
 
 

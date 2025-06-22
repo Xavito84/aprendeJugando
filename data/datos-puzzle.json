@@ -1,11 +1,10 @@
 [
   {
-    "id": "perro",
-    "pieza1": "../assets/img/puzzle-perro-1.png",
-    "pieza2": "../assets/img/puzzle-perro-2.png",
-    "pieza3": "../assets/img/puzzle-perro-3.png",
-    "pieza4": "../assets/img/puzzle-perro-4.png",
-    "piezaTotal": "../assets/img/perro.png"
+    "nombre": "Perro",
+    "pieza1": "../assets/puzzle/perro1.png",
+    "pieza2": "../assets/puzzle/perro2.png",
+    "pieza3": "../assets/puzzle/perro3.png",
+    "pieza4": "../assets/puzzle/perro4.png",
+    "completo": "../assets/puzzle/perro.png"
   }
 ]
-
