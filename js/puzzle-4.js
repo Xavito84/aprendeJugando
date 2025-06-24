@@ -81,20 +81,27 @@ function soltar(e) {
     }
 
     if (piezasColocadas === 4) {
-  mensaje.textContent = "🎉 ¡Bien hecho! Puzzle completado.";
+      mensaje.textContent = "🎉 ¡Bien hecho! Puzzle completado.";
 
-  const zonas = document.getElementById("zonaDestino");
-  zonas.innerHTML = ''; // vacía el grid
-  const finalImg = document.createElement("img");
-  finalImg.src = puzzleActual.completo;
-  finalImg.alt = "Puzzle completo";
-  finalImg.classList.add("final");
-  zonas.appendChild(finalImg);
+      zonas.innerHTML = ''; // vacía el grid
+      const finalImg = document.createElement("img");
+      finalImg.src = puzzleActual.completo;
+      finalImg.alt = "Puzzle completo";
+      finalImg.classList.add("final");
+      zonas.appendChild(finalImg);
 
-  setTimeout(() => {
-    window.location.href = "../niveles/nivel-4.html";
-  }, 3000);
-}
+      // ✅ GUARDAR PROGRESO EN localStorage
+      const nombre = localStorage.getItem('usuario') || 'Peque';
+      const claveProgreso = 'progresoNivel4_' + nombre;
+      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {};
+      progreso.puzzle = true;
+      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+
+      setTimeout(() => {
+        window.location.href = "../niveles/nivel-4.html";
+      }, 3000);
+    }
+
 
   }
 }
