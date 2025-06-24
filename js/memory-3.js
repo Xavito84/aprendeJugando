@@ -51,7 +51,7 @@ function createBoard() {
     const img = document.createElement('img');
     img.src = imgSrc;
     img.alt = 'Imagen';
-    img.loading = 'lazy'; // ✅ Aquí se añade
+    img.loading = 'lazy';
 
     card.appendChild(img);
     card.addEventListener('click', () => flipCard(card));
