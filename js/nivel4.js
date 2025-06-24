@@ -8,7 +8,8 @@ const claveProgreso = 'progresoNivel4_' + nombre;
 // Cargar progreso específico del usuario o crear nuevo
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   
-  letras: false
+  letras: false,
+  puzzle: false
   
 };
 
@@ -16,6 +17,7 @@ let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
 function actualizarProgreso() {
  
   document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
+  document.getElementById('progreso-puzzle').textContent = progreso.puzzle ? '✅' : '❌';
   
 }
 actualizarProgreso();
