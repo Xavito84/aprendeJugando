@@ -1,25 +1,12 @@
-const allImages = [
-  '../assets/img/avion.jpg',
-  '../assets/img/barco.jpg',
-  '../assets/img/conejo.png',
-  '../assets/img/delfin.png',
-  '../assets/img/elefante.png',
-  '../assets/img/fresa.png',
-  '../assets/img/gato.png',
-  '../assets/img/helado.png',
-  '../assets/img/indio.png',
-  '../assets/img/jirafa.png',
-  // Si quieres más imágenes para futuros niveles, añádelas aquí
-];
-
 const board = document.getElementById('memory-board2');
 const message = document.getElementById('message');
 const resetBtn = document.getElementById('reset-btn');
-const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');  
+const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');
 
 let flippedCards = [];
 let matchedPairs = 0;
 let cardsArray = [];
+let allImages = [];
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -31,7 +18,7 @@ function shuffle(array) {
 function selectImages(num) {
   const copy = [...allImages];
   shuffle(copy);
-  return copy.slice(0, num);
+  return copy.slice(0, num).map(obj => obj.src);
 }
 
 function createBoard() {
@@ -40,7 +27,7 @@ function createBoard() {
   message.textContent = '';
   flippedCards = [];
 
-  const selectedImages = selectImages(10); // Ahora seleccionamos 10 imágenes para 20 cartas
+  const selectedImages = selectImages(10); // 10 parejas
   cardsArray = [...selectedImages, ...selectedImages];
   shuffle(cardsArray);
 
@@ -59,7 +46,6 @@ function createBoard() {
     board.appendChild(card);
   });
 
-  // Ajusta el grid CSS para 5 columnas y 4 filas (puede estar en CSS, pero si quieres inline):
   board.style.gridTemplateColumns = 'repeat(5, 1fr)';
   board.style.gridTemplateRows = 'repeat(4, auto)';
 }
@@ -80,14 +66,13 @@ function checkForMatch() {
 
   if (card1.dataset.image === card2.dataset.image) {
     matchedPairs++;
-
     sonidoAcierto.currentTime = 0;
     sonidoAcierto.play();
 
     card1.style.pointerEvents = 'none';
     card2.style.pointerEvents = 'none';
 
-    if (matchedPairs === 10) { // 10 parejas a encontrar
+    if (matchedPairs === 10) {
       message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
 
       const nombre = localStorage.getItem('usuario') || 'Peque';
@@ -111,7 +96,12 @@ function checkForMatch() {
 
 resetBtn.addEventListener('click', createBoard);
 
-document.addEventListener('DOMContentLoaded', createBoard);
+fetch('../data/datos-memory.json')
+  .then(res => res.json())
+  .then(data => {
+    allImages = data;
+    createBoard();
+  });
 
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-4.html';

@@ -1,16 +1,3 @@
-const allImages = [
-  '../assets/img/avion.jpg',
-  '../assets/img/barco.jpg',
-  '../assets/img/conejo.png',
-  '../assets/img/delfin.png',
-  '../assets/img/elefante.png',
-  '../assets/img/fresa.png',
-  '../assets/img/gato.png',
-  '../assets/img/helado.png',
-  '../assets/img/indio.png',
-  '../assets/img/jirafa.png'
-];
-
 const board = document.getElementById('memory-board');
 const message = document.getElementById('message');
 const resetBtn = document.getElementById('reset-btn');
@@ -19,6 +6,7 @@ const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');
 let flippedCards = [];
 let matchedPairs = 0;
 let cardsArray = [];
+let allImages = [];
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -30,7 +18,7 @@ function shuffle(array) {
 function selectImages(num) {
   const copy = [...allImages];
   shuffle(copy);
-  return copy.slice(0, num);
+  return copy.slice(0, num).map(obj => obj.src);
 }
 
 function createBoard() {
@@ -39,7 +27,7 @@ function createBoard() {
   message.textContent = '';
   flippedCards = [];
 
-  const selectedImages = selectImages(3);
+  const selectedImages = selectImages(3); // Solo 3 parejas para niños más pequeños
   cardsArray = [...selectedImages, ...selectedImages];
   shuffle(cardsArray);
 
@@ -57,7 +45,6 @@ function createBoard() {
     card.addEventListener('click', () => flipCard(card));
     board.appendChild(card);
   });
-
 }
 
 function flipCard(card) {
@@ -83,22 +70,19 @@ function checkForMatch() {
     card1.style.pointerEvents = 'none';
     card2.style.pointerEvents = 'none';
 
-    if (matchedPairs === 3) { 
+    if (matchedPairs === 3) {
       message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
-
 
       const nombre = localStorage.getItem('usuario') || 'Peque';
       const claveProgreso = 'progresoNivel3_' + nombre;
       let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false, memory: false };
 
-      progreso.memory = true;  // Marcar memory como completado
+      progreso.memory = true;
       localStorage.setItem(claveProgreso, JSON.stringify(progreso));
 
-      // Tras 2 segundos redirigir a niveles
       setTimeout(() => {
         window.location.href = '../niveles/nivel-3.html';
       }, 2000);
-
     }
   } else {
     card1.classList.remove('flipped');
@@ -110,7 +94,12 @@ function checkForMatch() {
 
 resetBtn.addEventListener('click', createBoard);
 
-document.addEventListener('DOMContentLoaded', createBoard);
+fetch('../data/datos-memory.json')
+  .then(res => res.json())
+  .then(data => {
+    allImages = data;
+    createBoard();
+  });
 
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-3.html';
