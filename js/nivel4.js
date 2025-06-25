@@ -10,7 +10,8 @@ let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   
   letras: false,
   puzzle: false,
-  memory: false
+  memory: false,
+  contar: false
   
 };
 
@@ -20,6 +21,10 @@ function actualizarProgreso() {
   document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
   document.getElementById('progreso-puzzle').textContent = progreso.puzzle ? '✅' : '❌';
   document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
+  document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
+  document.getElementById('progreso-total').textContent =
+    `${Object.values(progreso).filter(v => v).length} / ${Object.keys(progreso).length}`;
+  document.getElementById('progreso-usuario').textContent = nombre;
   
 }
 actualizarProgreso();
