@@ -404,13 +404,14 @@ select:focus {
   margin-top: 20px;
   justify-content: center;
 }
- #memory-board3 {
-      display: grid;
-      grid-template-columns: repeat(6, 100px);
-      gap: 10px;
-      justify-content: center;
-      margin: 20px 0;
-    }
+.tablero-6x5 {
+  display: grid;
+  grid-template-columns: repeat(6, 110px);
+  grid-template-rows: repeat(5, 110px);
+  gap: 10px;
+  justify-content: center;
+}
+
 
 .card {
   width: 110px;
