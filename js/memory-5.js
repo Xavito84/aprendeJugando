@@ -1,7 +1,7 @@
 const board = document.getElementById('memory-board');
 const message = document.getElementById('message');
 const resetBtn = document.getElementById('reset-btn');
-const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');
+const sonidoAcierto = new Audio('../assets/audio/applause.mp3');
 
 let flippedCards = [];
 let matchedPairs = 0;
