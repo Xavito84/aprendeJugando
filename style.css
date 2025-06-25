@@ -404,6 +404,13 @@ select:focus {
   margin-top: 20px;
   justify-content: center;
 }
+ #memory-board3 {
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
 
 .card {
   width: 110px;
