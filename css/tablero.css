@@ -1,31 +1,47 @@
-.tablero {
+#tablero {
   display: grid;
-  grid-template-columns: repeat(4, 80px);
-  grid-gap: 10px;
-  justify-content: center;
-  margin: 20px auto;
+  grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .carta {
-  width: 80px;
-  height: 80px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
+  width: 110px;
+  height: 110px;
+  background-color: #4caf50;
+  border-radius: 12px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s;
+  position: relative;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  user-select: none;
+  transition: background-color 0.3s ease;
+  overflow: hidden; /* para que la imagen no sobresalga */
 }
 
 .carta img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  width: 100%;      /* Llena todo el ancho */
+  height: 100%;     /* Llena todo el alto */
+  border-radius: 12px; /* Igual que la carta */
+  object-fit: cover;  /* Recorta y cubre sin deformar */
+  display: none;    /* Oculta al inicio */
 }
 
 .carta.descubierta {
-  border-color: green;
+  background-color: #fff; /* Fondo blanco al descubrir */
   cursor: default;
+}
+
+.carta.descubierta img {
+  display: block;   /* Muestra la imagen al descubrir */
+}
+
+#mensaje {
+  text-align: center;
+  font-size: 1.2em;
+  color: #333;
+  margin-top: 20px;
 }

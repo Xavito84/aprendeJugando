@@ -1,18 +1,20 @@
 const tablero = document.getElementById("tablero");
-const mensaje = document.getElementById("mensaje");
-const reiniciarBtn = document.getElementById("btnReiniciar");
+const mensaje = document.getElementById("message");
+const reiniciarBtn = document.getElementById("reset-btn");
+const volverBtn = document.getElementById("btnVolver");
+const sonidoAcierto = new Audio('../assets/audio/aplauso.mp3');
 
 const imagenes = [
- '../assets/img/avion.jpg',
-  '../assets/img/barco.jpg',
-  '../assets/img/conejo.png',
-  '../assets/img/delfin.png',
-  '../assets/img/elefante.png',
-  '../assets/img/fresa.png',
-  '../assets/img/gato.png',
-  '../assets/img/helado.png',
-  '../assets/img/indio.png',
-  '../assets/img/jirafa.png'
+  'avion.jpg',
+  'barco.jpg',
+  'conejo.png',
+  'delfin.png',
+  'elefante.png',
+  'fresa.png',
+  'gato.png',
+  'helado.png',
+  'indio.png',
+  'jirafa.png'
 ];
 
 let cartas = [];
@@ -37,11 +39,6 @@ function iniciarJuego() {
     div.dataset.id = carta.id;
     div.dataset.nombre = carta.nombre;
 
-    const img = document.createElement("img");
-    img.src = "../assets/img/interrogacion.png";
-    img.alt = "Carta oculta";
-
-    div.appendChild(img);
     div.addEventListener("click", () => voltearCarta(div));
     tablero.appendChild(div);
   });
@@ -50,12 +47,23 @@ function iniciarJuego() {
 function voltearCarta(carta) {
   if (bloqueadas || carta.classList.contains("descubierta") || seleccionadas.includes(carta)) return;
 
-  carta.querySelector("img").src = "../assets/img/" + carta.dataset.nombre;
+  mostrarImagen(carta);
   seleccionadas.push(carta);
 
   if (seleccionadas.length === 2) {
     comprobarPareja();
   }
+}
+
+function mostrarImagen(carta) {
+  carta.style.backgroundImage = `url("../assets/img/${carta.dataset.nombre}")`;
+  carta.style.backgroundSize = 'cover';
+  carta.style.backgroundPosition = 'center';
+}
+
+function ocultarImagen(carta) {
+  carta.style.backgroundImage = "";
+  carta.style.backgroundColor = "#4caf50";
 }
 
 function comprobarPareja() {
@@ -68,6 +76,7 @@ function comprobarPareja() {
     seleccionadas = [];
     bloqueadas = false;
     aciertos++;
+    sonidoAcierto.play();
 
     if (aciertos === imagenes.length) {
       mensaje.textContent = "🎉 ¡Completaste el juego!";
@@ -78,8 +87,8 @@ function comprobarPareja() {
     }
   } else {
     setTimeout(() => {
-      c1.querySelector("img").src = "../assets/img/interrogacion.png";
-      c2.querySelector("img").src = "../assets/img/interrogacion.png";
+      ocultarImagen(c1);
+      ocultarImagen(c2);
       seleccionadas = [];
       bloqueadas = false;
     }, 1000);
@@ -94,14 +103,20 @@ function mezclar(array) {
   return array;
 }
 
-reiniciarBtn.onclick = iniciarJuego;
-
 function guardarProgreso() {
   const nombre = localStorage.getItem("usuario") || "Peque";
-  const claveProgreso = "progresoNivel4_" + nombre;
+  const claveProgreso = "progreso_" + nombre;
   let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {};
-  progreso.memory = true;
+
+  if (!progreso.niveles) {
+    progreso.niveles = {};
+  }
+
+  progreso.niveles.memory4 = true;
   localStorage.setItem(claveProgreso, JSON.stringify(progreso));
 }
+
+reiniciarBtn.onclick = iniciarJuego;
+volverBtn.onclick = () => window.location.href = "../niveles/nivel-3.html";
 
 iniciarJuego();

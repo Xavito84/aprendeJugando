@@ -14,7 +14,7 @@ const allImages = [
 const board = document.getElementById('memory-board');
 const message = document.getElementById('message');
 const resetBtn = document.getElementById('reset-btn');
-const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');  // Ruta al audio de aplauso
+const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');  
 
 let flippedCards = [];
 let matchedPairs = 0;
@@ -83,10 +83,10 @@ function checkForMatch() {
     card1.style.pointerEvents = 'none';
     card2.style.pointerEvents = 'none';
 
-    if (matchedPairs === 3) { // Todas las parejas encontradas
+    if (matchedPairs === 3) { 
       message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
 
-      // Guardar progreso en localStorage
+
       const nombre = localStorage.getItem('usuario') || 'Peque';
       const claveProgreso = 'progresoNivel3_' + nombre;
       let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false, memory: false };
