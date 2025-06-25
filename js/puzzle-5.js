@@ -22,10 +22,6 @@ function iniciarPuzzle(puzzle) {
   zonas.innerHTML = "";
   mensaje.textContent = "";
   piezasColocadas = 0;
-  zonas.style.display = "grid";
-
-  const finalContainer = document.querySelector(".final-container");
-  if (finalContainer) finalContainer.remove();
 
   const piezas = [];
   for (let i = 1; i <= 16; i++) {
@@ -65,25 +61,25 @@ function permitirSoltar(e) {
 
 function soltar(e) {
   e.preventDefault();
-  const zona = e.target.closest(".zona");
+  const zona = e.target.closest('.zona');
   const piezaId = e.dataTransfer.getData("text/plain");
   const src = e.dataTransfer.getData("src");
 
-  if (zona.hasChildNodes()) {
-    const anterior = zona.firstChild;
+  if (zona.firstChild) {
+    const piezaAnterior = zona.firstChild;
     const imgDevuelta = document.createElement("img");
-    imgDevuelta.src = anterior.src;
+    imgDevuelta.src = piezaAnterior.src;
     imgDevuelta.classList.add("pieza");
     imgDevuelta.setAttribute("draggable", "true");
-    imgDevuelta.dataset.pieza = anterior.dataset.piezaColocadaId;
+    imgDevuelta.dataset.pieza = piezaAnterior.dataset.piezaColocadaId;
     imgDevuelta.addEventListener("dragstart", arrastrar);
     contenedorPuzzle.appendChild(imgDevuelta);
 
-    if (zona.dataset.destino === anterior.dataset.piezaColocadaId) {
+    if (piezaAnterior.dataset.piezaColocadaId === zona.dataset.destino) {
       piezasColocadas--;
     }
 
-    zona.innerHTML = '';
+    zona.innerHTML = "";
   }
 
   const img = document.createElement("img");
@@ -100,20 +96,7 @@ function soltar(e) {
   }
 
   if (piezasColocadas === 16) {
-    mensaje.textContent = "🎉 ¡Bien hecho! Puzzle completado.";
-
-    zonas.style.display = "none";
-
-    const finalContainer = document.createElement("div");
-    finalContainer.classList.add("final-container");
-
-    const finalImg = document.createElement("img");
-    finalImg.src = puzzleActual.completo;
-    finalImg.alt = "Puzzle completo";
-    finalImg.classList.add("final");
-
-    finalContainer.appendChild(finalImg);
-    zonas.parentElement.appendChild(finalContainer);
+    mensaje.textContent = "🎉 ¡Felicidades! Has completado el puzzle.";
 
     const nombre = localStorage.getItem('usuario') || 'Peque';
     const claveProgreso = 'progresoNivel5_' + nombre;
