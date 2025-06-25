@@ -7,6 +7,7 @@ const reiniciarBtn = document.getElementById("btnReiniciar");
 let piezasColocadas = 0;
 let puzzleActual = null;
 
+// Carga los datos del puzzle 5
 fetch("../data/datos-puzzle2.json")
   .then(res => res.json())
   .then(data => {
@@ -23,7 +24,7 @@ function iniciarPuzzle(puzzle) {
   mensaje.textContent = "";
   piezasColocadas = 0;
 
-  // Array con las 16 piezas (pieza1..pieza16)
+  // Array con 16 piezas
   const piezas = [];
   for (let i = 1; i <= 16; i++) {
     piezas.push({ src: puzzle[`pieza${i}`], pos: i.toString() });
@@ -62,64 +63,63 @@ function permitirSoltar(e) {
 
 function soltar(e) {
   e.preventDefault();
-  const zona = e.currentTarget; // mejor usar currentTarget para zonas
+  const zona = e.target.closest(".zona");
+  if (!zona) return;
 
   const piezaId = e.dataTransfer.getData("text/plain");
   const src = e.dataTransfer.getData("src");
 
-  // Si ya hay una pieza en la zona, devolverla al contenedor
+  // Si la zona ya tiene una pieza, devolverla al contenedor
   if (zona.hasChildNodes()) {
     const piezaColocada = zona.firstChild;
     const piezaColocadaId = piezaColocada.dataset.piezaColocadaId;
 
-    // Crear img para devolver al contenedor
-    const imgDevuelta = document.createElement("img");
-    imgDevuelta.src = piezaColocada.src;
-    imgDevuelta.classList.add("pieza");
-    imgDevuelta.setAttribute("draggable", "true");
-    imgDevuelta.dataset.pieza = piezaColocadaId;
-    imgDevuelta.addEventListener("dragstart", arrastrar);
-    contenedorPuzzle.appendChild(imgDevuelta);
+    if (piezaColocadaId) {
+      // Crear la pieza para devolver al contenedor
+      const imgDevuelta = document.createElement("img");
+      imgDevuelta.src = piezaColocada.src;
+      imgDevuelta.classList.add("pieza");
+      imgDevuelta.setAttribute("draggable", "true");
+      imgDevuelta.dataset.pieza = piezaColocadaId;
+      imgDevuelta.addEventListener("dragstart", arrastrar);
+      contenedorPuzzle.appendChild(imgDevuelta);
 
-    // Si esa pieza estaba bien colocada, restar contador
-    if (zona.dataset.destino === piezaColocadaId) piezasColocadas--;
-
+      // Si estaba bien colocada, disminuir contador
+      if (piezaColocadaId === zona.dataset.destino) piezasColocadas--;
+    }
     zona.innerHTML = "";
   }
 
-  // Colocar la pieza arrastrada en la zona
+  // Poner la pieza nueva en la zona
   const img = document.createElement("img");
   img.src = src;
   img.classList.add("pieza-colocada");
   img.dataset.piezaColocadaId = piezaId;
   zona.appendChild(img);
 
-  // Remover la pieza del contenedor original si está ahí
+  // Quitar la pieza del contenedor
   const piezaOriginal = contenedorPuzzle.querySelector(`[data-pieza="${piezaId}"]`);
   if (piezaOriginal) piezaOriginal.remove();
 
-  // Contar si la pieza es correcta para la zona
+  // Comprobar si la pieza está bien colocada
   if (piezaId === zona.dataset.destino) piezasColocadas++;
 
-  // Comprobar si terminó el puzzle
   if (piezasColocadas === 16) {
     mensaje.textContent = "🎉 ¡Bien hecho! Puzzle completado.";
 
-    // Vaciar zonas y poner la imagen final con tamaño ajustado
-    zonas.innerHTML = '';
+    zonas.innerHTML = "";
     const finalImg = document.createElement("img");
     finalImg.src = puzzleActual.completo;
     finalImg.alt = "Puzzle completo";
     finalImg.classList.add("final");
     zonas.appendChild(finalImg);
 
-    // Guardar progreso localStorage
+    // Guardar progreso en localStorage
     const nombre = localStorage.getItem('usuario') || 'Peque';
     const claveProgreso = 'progresoNivel5_' + nombre;
     let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {};
     progreso.puzzle = true;
     localStorage.setItem(claveProgreso, JSON.stringify(progreso));
-    console.log('Progreso guardado:', progreso);
 
     setTimeout(() => {
       window.location.href = "../niveles/nivel-5.html";

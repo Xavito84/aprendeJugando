@@ -593,79 +593,66 @@ img.final {
 }
 
 /**Puzzle-5**/
+/* Puzzle 5 - 4x4 */
+
 .cuadro-puzzle-4x4 {
   display: grid;
   grid-template-columns: repeat(4, 80px);
   grid-template-rows: repeat(4, 80px);
-  gap: 5px;
-  margin-bottom: 20px;
-  justify-content: center;
+  gap: 4px;
+  margin: 20px auto;
+  width: max-content;
+  border: 2px solid #444;
+  background-color: #eee;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
 .piezas-4x4 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
 .pieza {
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
   cursor: grab;
-  object-fit: contain; /* Ajusta la imagen para no deformar */
   user-select: none;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-sizing: border-box;
 }
 
 .pieza-colocada {
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
   user-select: none;
-  object-fit: contain; /* Que no sobresalga ni se deforme */
-  pointer-events: none; /* Evita que se pueda volver a arrastrar desde la zona */
-}
-
-#zonaDestino {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 4px; /* Separación mínima entre las piezas */
-  width: 320px; /* Tamaño fijo para que encaje el puzzle */
-  height: 320px; /* Altura fija para que no se expanda */
-  margin: 0 auto;
-  border: 2px solid #444;
-  background-color: #eee;
-  padding: 4px;
-  box-sizing: border-box;
-  overflow: hidden; /* Evita que las piezas sobresalgan */
+  object-fit: cover;
+  pointer-events: auto;
 }
 
 .zona {
   background-color: white;
   border: 1px solid #999;
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   cursor: pointer;
-  overflow: hidden;
-  position: relative;
 }
-
-.zona img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 
 .final {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Que la imagen final se ajuste sin deformar */
-  user-select: none;
-  pointer-events: none;
+  max-width: 320px;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 
