@@ -8,6 +8,17 @@
   { "src": "../assets/img/gato.png" },
   { "src": "../assets/img/helado.png" },
   { "src": "../assets/img/indio.png" },
-  { "src": "../assets/img/jirafa.png" }
+  { "src": "../assets/img/jirafa.png" },
+  {"src":"../assets/img/estrella.png"},
+  {"src":"../assets/img/sol.png"},
+  {"src":"../assets/img/pelota.png"},
+  {"src":"../assets/img/rana.png"},
+  {"src":"../assets/img/serpiente.png"},
+  {"src":"../assets/img/mosquito.png"},
+  {"src":"../assets/img/pinguino.png"},
+  {"src":"../assets/img/robot.png"},
+  {"src":"../assets/img/leon.png"},
+  {"src":"../assets/img/kiwi.png"}
+
 
 ]
