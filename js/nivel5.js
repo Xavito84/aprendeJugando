@@ -8,7 +8,8 @@ const claveProgreso = 'progresoNivel5_' + nombre;
 // Cargar progreso específico del usuario o crear nuevo
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   
-  memory: false
+  memory: false,
+  contar: false
   
   
 };
