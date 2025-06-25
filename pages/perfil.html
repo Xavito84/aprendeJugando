@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - AprendeJugando</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <h1>AprendeJugando</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="inicio.html">Juegos</a></li>
+        <li><a href="perfil.html" class="activo">Mi perfil</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Perfil del usuario</h2>
+
+    <div class="perfil-box">
+      <img src="../assets/img/avatar.png" alt="Avatar de usuario" class="avatar-perfil">
+      <div class="info-usuario">
+        <p><strong>Nombre:</strong> <span id="nombreUsuario">Xavier Martínez</span></p>
+        <p><strong>Email:</strong> <span id="emailUsuario">xavier@example.com</span></p>
+        <p><strong>Progreso:</strong> <span id="progresoUsuario">75%</span></p>
+      </div>
+    </div>
+
+    <button id="editarPerfil">Editar perfil</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="../js/perfil.js"></script>
+</body>
+</html>

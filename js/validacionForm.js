@@ -1,46 +1,37 @@
-// Validación de formulario de contacto
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.contact-form');
 
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector("form");
-  form.addEventListener("submit", function (event) {
-    const nombre = document.getElementById("nombre");
-    const email = document.getElementById("email");
-    const mensaje = document.getElementById("mensaje");
-    let valido = true;
+  form.addEventListener('submit', function (e) {
+    const nombre = document.getElementById('nombre');
+    const email = document.getElementById('email');
+    const mensaje = document.getElementById('mensaje');
 
-    // Eliminar errores previos
-    document.querySelectorAll(".error-msg").forEach(el => el.remove());
-
-    // Validar nombre
-    if (nombre.value.trim() === "") {
-      mostrarError(nombre, "Por favor, introduce tu nombre.");
-      valido = false;
+    // Validación nombre (solo letras y espacios, mínimo 2 caracteres)
+    const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}$/.test(nombre.value);
+    if (!nombreValido) {
+      alert('Por favor, introduce un nombre válido (solo letras y al menos 2 caracteres).');
+      nombre.focus();
+      e.preventDefault();
+      return;
     }
 
-    // Validar email 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.value.trim())) {
-      mostrarError(email, "Introduce un correo electrónico válido.");
-      valido = false;
+    // Validación email (HTML ya valida, pero hacemos control extra)
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+    if (!emailValido) {
+      alert('Por favor, introduce un correo electrónico válido.');
+      email.focus();
+      e.preventDefault();
+      return;
     }
 
-    // Validar mensaje
+    // Validación mensaje (mínimo 10 caracteres)
     if (mensaje.value.trim().length < 10) {
-      mostrarError(mensaje, "El mensaje debe tener al menos 10 caracteres.");
-      valido = false;
+      alert('El mensaje debe tener al menos 10 caracteres.');
+      mensaje.focus();
+      e.preventDefault();
+      return;
     }
 
-    if (!valido) {
-      event.preventDefault();
-    }
+    // Todo válido, permitir envío
   });
-
-  function mostrarError(elemento, mensaje) {
-    const error = document.createElement("div");
-    error.className = "error-msg";
-    error.style.color = "red";
-    error.style.fontSize = "0.9em";
-    error.textContent = mensaje;
-    elemento.parentNode.insertBefore(error, elemento.nextSibling);
-  }
 });
