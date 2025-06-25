@@ -1,122 +1,118 @@
-const tablero = document.getElementById("tablero");
-const mensaje = document.getElementById("message");
-const reiniciarBtn = document.getElementById("reset-btn");
-const volverBtn = document.getElementById("btnVolver");
-const sonidoAcierto = new Audio('../assets/audio/aplauso.mp3');
-
-const imagenes = [
-  'avion.jpg',
-  'barco.jpg',
-  'conejo.png',
-  'delfin.png',
-  'elefante.png',
-  'fresa.png',
-  'gato.png',
-  'helado.png',
-  'indio.png',
-  'jirafa.png'
+const allImages = [
+  '../assets/img/avion.jpg',
+  '../assets/img/barco.jpg',
+  '../assets/img/conejo.png',
+  '../assets/img/delfin.png',
+  '../assets/img/elefante.png',
+  '../assets/img/fresa.png',
+  '../assets/img/gato.png',
+  '../assets/img/helado.png',
+  '../assets/img/indio.png',
+  '../assets/img/jirafa.png',
+  // Si quieres más imágenes para futuros niveles, añádelas aquí
 ];
 
-let cartas = [];
-let seleccionadas = [];
-let bloqueadas = false;
-let aciertos = 0;
+const board = document.getElementById('memory-board2');
+const message = document.getElementById('message');
+const resetBtn = document.getElementById('reset-btn');
+const sonidoAcierto = new Audio('../assets/sounds/applause.mp3');  
 
-function iniciarJuego() {
-  cartas = [...imagenes, ...imagenes].map(nombre => ({
-    nombre,
-    id: crypto.randomUUID(),
-  }));
-  cartas = mezclar(cartas);
+let flippedCards = [];
+let matchedPairs = 0;
+let cardsArray = [];
 
-  tablero.innerHTML = "";
-  mensaje.textContent = "";
-  aciertos = 0;
-
-  cartas.forEach(carta => {
-    const div = document.createElement("div");
-    div.classList.add("carta");
-    div.dataset.id = carta.id;
-    div.dataset.nombre = carta.nombre;
-
-    div.addEventListener("click", () => voltearCarta(div));
-    tablero.appendChild(div);
-  });
-}
-
-function voltearCarta(carta) {
-  if (bloqueadas || carta.classList.contains("descubierta") || seleccionadas.includes(carta)) return;
-
-  mostrarImagen(carta);
-  seleccionadas.push(carta);
-
-  if (seleccionadas.length === 2) {
-    comprobarPareja();
-  }
-}
-
-function mostrarImagen(carta) {
-  carta.style.backgroundImage = `url("../assets/img/${carta.dataset.nombre}")`;
-  carta.style.backgroundSize = 'cover';
-  carta.style.backgroundPosition = 'center';
-}
-
-function ocultarImagen(carta) {
-  carta.style.backgroundImage = "";
-  carta.style.backgroundColor = "#4caf50";
-}
-
-function comprobarPareja() {
-  const [c1, c2] = seleccionadas;
-  bloqueadas = true;
-
-  if (c1.dataset.nombre === c2.dataset.nombre) {
-    c1.classList.add("descubierta");
-    c2.classList.add("descubierta");
-    seleccionadas = [];
-    bloqueadas = false;
-    aciertos++;
-    sonidoAcierto.play();
-
-    if (aciertos === imagenes.length) {
-      mensaje.textContent = "🎉 ¡Completaste el juego!";
-      guardarProgreso();
-      setTimeout(() => {
-        window.location.href = "../niveles/nivel-4.html";
-      }, 3000);
-    }
-  } else {
-    setTimeout(() => {
-      ocultarImagen(c1);
-      ocultarImagen(c2);
-      seleccionadas = [];
-      bloqueadas = false;
-    }, 1000);
-  }
-}
-
-function mezclar(array) {
+function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-  return array;
 }
 
-function guardarProgreso() {
-  const nombre = localStorage.getItem("usuario") || "Peque";
-  const claveProgreso = "progreso_" + nombre;
-  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {};
+function selectImages(num) {
+  const copy = [...allImages];
+  shuffle(copy);
+  return copy.slice(0, num);
+}
 
-  if (!progreso.niveles) {
-    progreso.niveles = {};
+function createBoard() {
+  board.innerHTML = '';
+  matchedPairs = 0;
+  message.textContent = '';
+  flippedCards = [];
+
+  const selectedImages = selectImages(10); // Ahora seleccionamos 10 imágenes para 20 cartas
+  cardsArray = [...selectedImages, ...selectedImages];
+  shuffle(cardsArray);
+
+  cardsArray.forEach((imgSrc) => {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.dataset.image = imgSrc;
+
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = 'Imagen';
+    img.loading = 'lazy';
+
+    card.appendChild(img);
+    card.addEventListener('click', () => flipCard(card));
+    board.appendChild(card);
+  });
+
+  // Ajusta el grid CSS para 5 columnas y 4 filas (puede estar en CSS, pero si quieres inline):
+  board.style.gridTemplateColumns = 'repeat(5, 1fr)';
+  board.style.gridTemplateRows = 'repeat(4, auto)';
+}
+
+function flipCard(card) {
+  if (flippedCards.length === 2 || card.classList.contains('flipped')) return;
+
+  card.classList.add('flipped');
+  flippedCards.push(card);
+
+  if (flippedCards.length === 2) {
+    setTimeout(checkForMatch, 1000);
+  }
+}
+
+function checkForMatch() {
+  const [card1, card2] = flippedCards;
+
+  if (card1.dataset.image === card2.dataset.image) {
+    matchedPairs++;
+
+    sonidoAcierto.currentTime = 0;
+    sonidoAcierto.play();
+
+    card1.style.pointerEvents = 'none';
+    card2.style.pointerEvents = 'none';
+
+    if (matchedPairs === 10) { // 10 parejas a encontrar
+      message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
+
+      const nombre = localStorage.getItem('usuario') || 'Peque';
+      const claveProgreso = 'progresoNivel4_' + nombre;
+      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { puzzle: false, memory: false, letras: false };
+
+      progreso.memory = true;
+      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+
+      setTimeout(() => {
+        window.location.href = '../niveles/nivel-4.html';
+      }, 2000);
+    }
+  } else {
+    card1.classList.remove('flipped');
+    card2.classList.remove('flipped');
   }
 
-  progreso.niveles.memory4 = true;
-  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+  flippedCards = [];
 }
 
-reiniciarBtn.onclick = iniciarJuego;
-volverBtn.onclick = () => window.location.href = "../niveles/nivel-3.html";
+resetBtn.addEventListener('click', createBoard);
 
-iniciarJuego();
+document.addEventListener('DOMContentLoaded', createBoard);
+
+document.getElementById('btnVolver').onclick = () => {
+  window.location.href = '../niveles/nivel-4.html';
+};

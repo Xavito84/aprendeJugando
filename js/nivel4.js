@@ -9,7 +9,8 @@ const claveProgreso = 'progresoNivel4_' + nombre;
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   
   letras: false,
-  puzzle: false
+  puzzle: false,
+  memory: false
   
 };
 
@@ -18,6 +19,7 @@ function actualizarProgreso() {
  
   document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
   document.getElementById('progreso-puzzle').textContent = progreso.puzzle ? '✅' : '❌';
+  document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
   
 }
 actualizarProgreso();
