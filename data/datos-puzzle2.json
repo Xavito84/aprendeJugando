@@ -1,0 +1,23 @@
+[
+    {
+    "nombre": "Granjero",
+    "pieza1": "../assets/img/puzzle2/granjero_row-1-column-1.png",
+    "pieza2": "../assets/img/puzzle2/granjero_row-1-column-2.png",
+    "pieza3": "../assets/img/puzzle2/granjero_row-1-column-3.png",
+    "pieza4": "../assets/img/puzzle2/granjero_row-1-column-4.png",
+    "pieza5": "../assets/img/puzzle2/granjero_row-2-column-1.png",
+    "pieza6": "../assets/img/puzzle2/granjero_row-2-column-2.png",
+    "pieza7": "../assets/img/puzzle2/granjero_row-2-column-3.png",
+    "pieza8": "../assets/img/puzzle2/granjero_row-2-column-4.png",
+    "pieza9": "../assets/img/puzzle2/granjero_row-3-column-1.png",
+    "pieza10": "../assets/img/puzzle2/granjero_row-3-column-2.png",
+    "pieza11": "../assets/img/puzzle2/granjero_row-3-column-3.png",
+    "pieza12": "../assets/img/puzzle2/granjero_row-3-column-4.png",
+    "pieza13": "../assets/img/puzzle2/granjero_row-4-column-1.png",
+    "pieza14": "../assets/img/puzzle2/granjero_row-4-column-2.png",
+    "pieza15": "../assets/img/puzzle2/granjero_row-4-column-3.png",
+    "pieza16": "../assets/img/puzzle2/granjero_row-4-column-4.png",
+    "completo": "../assets/img/puzzle2/granjero.png"
+
+  }
+]

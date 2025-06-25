@@ -19,6 +19,10 @@ function actualizarProgreso() {
  
   
   document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
+    document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
+    
+    document.getElementById('progreso-total').textContent =
+        `${Object.values(progreso).filter(v => v).length} / ${Object.keys(progreso).length}`;
   
   document.getElementById('progreso-total').textContent =
     `${Object.values(progreso).filter(v => v).length} / ${Object.keys(progreso).length}`;
