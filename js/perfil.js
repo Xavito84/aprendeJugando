@@ -3,26 +3,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailSpan = document.getElementById("emailUsuario");
   const progresoSpan = document.getElementById("progresoUsuario");
   const editarBtn = document.getElementById("editarPerfil");
+  const edadContainer = document.getElementById("edadUsuario"); // nuevo
 
-  // Cargar datos desde localStorage
   const user = JSON.parse(localStorage.getItem("usuario"));
 
   if (user) {
     nombreSpan.textContent = user.nombre || "Sin nombre";
     emailSpan.textContent = user.email || "Sin correo";
     progresoSpan.textContent = user.progreso ? `${user.progreso}%` : "0%";
+    if (edadContainer) edadContainer.textContent = user.edad || "N/D";
   } else {
-    // Si no hay datos, establecer algunos por defecto
     const userDefault = {
       nombre: "Xavier Martínez",
       email: "xavier@example.com",
+      edad: "N/D",
       progreso: 0
     };
     localStorage.setItem("usuario", JSON.stringify(userDefault));
-    location.reload(); // Recarga para aplicar datos
+    location.reload();
   }
 
-  // Botón para editar
   editarBtn.addEventListener("click", () => {
     const nuevoNombre = prompt("Edita tu nombre:", nombreSpan.textContent);
     const nuevoEmail = prompt("Edita tu correo:", emailSpan.textContent);
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       localStorage.setItem("usuario", JSON.stringify(updatedUser));
       alert("Perfil actualizado.");
-      location.reload(); // Refrescar para mostrar los cambios
+      location.reload();
     } else {
       alert("Los campos no pueden estar vacíos.");
     }

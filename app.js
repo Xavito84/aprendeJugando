@@ -1,20 +1,26 @@
-document.getElementById('btnStart').addEventListener('click', () => {
-  const nombre = document.getElementById('nombreInput').value.trim();
-  const edad = document.getElementById('edadSelect').value;
+document.addEventListener("DOMContentLoaded", () => {
+  const nombreInput = document.getElementById("nombreInput");
+  const edadSelect = document.getElementById("edadSelect");
+  const btnStart = document.getElementById("btnStart");
 
-  if (!nombre) {
-    alert('Por favor, escribe tu nombre 😊');
-    return;
-  }
-  if (!edad) {
-    alert('Por favor, selecciona tu edad');
-    return;
-  }
+  btnStart.addEventListener("click", () => {
+    const nombre = nombreInput.value.trim();
+    const edad = edadSelect.value;
 
-  // Guardar en localStorage para simular usuario y edad
-  localStorage.setItem('usuario', nombre);
-  localStorage.setItem('edad', edad);
+    if (!nombre || !edad) {
+      alert("Por favor, escribe tu nombre y selecciona tu edad.");
+      return;
+    }
 
-  // Redirigir a la página del nivel correspondiente
-  window.location.href = `../niveles/nivel-${edad}.html`;
+    const usuario = {
+      nombre,
+      edad,
+      email: "Sin correo",
+      progreso: 0
+    };
+
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+    alert("¡Bienvenido/a, " + nombre + "!");
+    window.location.href = "perfil.html"; // Redirige al perfil después
+  });
 });
