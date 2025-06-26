@@ -27,26 +27,29 @@
       <p>Si tienes preguntas, sugerencias o quieres colaborar con AprendeJugando, puedes contactarnos mediante el
         siguiente formulario:</p>
 
-      <form action="https://formsubmit.co/toyguay18@hotmail.com" method="POST" class="contact-form">
+      <form action="https://formsubmit.co/toyguay18@hotmail.com" method="POST">
 
-        <!-- Tus campos aquí -->
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <label for="nombre">Nombre: <span style="color:red;">*</span></label>
+        <input type="text" id="nombre" name="nombre" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}"
+          title="Introduce solo letras y espacios (mínimo 2 caracteres)">
 
-        <label for="email">Correo electrónico:</label>
-        <input type="email" id="email" name="email" required>
+        <label for="email">Correo electrónico: <span style="color:red;">*</span></label>
+        <input type="email" id="email" name="email" required placeholder="nombre@correo.com">
 
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="mensaje" required></textarea>
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}"
+          title="Introduce un número de 9 cifras sin espacios ni guiones">
 
-        <!-- Redirección al enviar -->
-        <input type="hidden" name="_next" value="https://xavito84.github.io/aprendeJugando/pages/gracias.html" />
-        <!-- Deshabilitar captcha -->
-        <input type="hidden" name="_captcha" value="false" />
+        <label for="mensaje">Mensaje o pregunta: <span style="color:red;">*</span></label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+        <p style="font-size: 0.9em;"><span style="color:red;">*</span> Campos obligatorios</p>
 
         <button type="submit">Enviar</button>
-      </form>
 
+        <input type="hidden" name="_next" value="https://xavito84.github.io/aprendeJugando/pages/gracias.html" />
+        <input type="hidden" name="_captcha" value="false" />
+      </form>
     </section>
   </div>
 
