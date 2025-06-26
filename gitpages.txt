@@ -1,1 +1,2 @@
-https://github.com/Xavito84/aprendeJugando
+https://github.com/Xavito84/aprendeJugando   ---> repositorio
+https://xavito84.github.io/aprendeJugando/   ----> pagina
