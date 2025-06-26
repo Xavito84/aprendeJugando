@@ -9,26 +9,29 @@ const claveProgreso = 'progresoNivel5_' + nombre;
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   
   memory: false,
-  contar: false
+  contar: false,
+  puzzle: false
   
   
 };
 
 // Actualizar visualmente el progreso
 function actualizarProgreso() {
- 
-  
   document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
-    document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
-    
-    document.getElementById('progreso-total').textContent =
-        `${Object.values(progreso).filter(v => v).length} / ${Object.keys(progreso).length}`;
-  
+  document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
+  document.getElementById('progreso-puzzle').textContent = progreso.puzzle ? '✅' : '❌';
+
+  // Opcional: colores
+  document.getElementById('progreso-memory').style.color = progreso.memory ? 'green' : 'red';
+  document.getElementById('progreso-contar').style.color = progreso.contar ? 'green' : 'red';
+  document.getElementById('progreso-puzzle').style.color = progreso.puzzle ? 'green' : 'red';
+
+  // Total
   document.getElementById('progreso-total').textContent =
     `${Object.values(progreso).filter(v => v).length} / ${Object.keys(progreso).length}`;
   document.getElementById('progreso-usuario').textContent = nombre;
-  
 }
+
 actualizarProgreso();
 
 // Función para ir al juego
