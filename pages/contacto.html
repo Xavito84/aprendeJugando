@@ -39,6 +39,11 @@
         <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}"
           title="Introduce un número de 9 cifras sin espacios ni guiones">
 
+        <label for="asunto">Asunto: <span style="color:red;">*</span></label>
+        <input type="text" id="asunto" name="asunto" required pattern=".{5,}"
+          title="El asunto debe tener al menos 5 caracteres">
+
+
         <label for="mensaje">Mensaje o pregunta: <span style="color:red;">*</span></label>
         <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
 
