@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const telefono = document.getElementById('telefono');
     const mensaje = document.getElementById('mensaje');
 
-    // Validar nombre
+    // Validar nombre (solo letras y espacios, mínimo 2 caracteres)
     const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}$/.test(nombre.value);
     if (!nombreValido) {
       alert('Por favor, introduce un nombre válido (mínimo 2 letras, solo texto).');
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Validar teléfono (opcional)
+    // Validar teléfono (opcional, solo si se ha introducido)
     if (telefono.value.trim() !== '') {
       const telefonoValido = /^[0-9]{9}$/.test(telefono.value);
       if (!telefonoValido) {
