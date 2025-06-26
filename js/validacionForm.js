@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const form = document.querySelector('.contact-form');
+  const form = document.querySelector('form[action="https://formsubmit.co/toyguay18@hotmail.com"]');
 
   form.addEventListener('submit', function (e) {
     const nombre = document.getElementById('nombre');
