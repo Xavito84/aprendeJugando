@@ -7,17 +7,6 @@ let flippedCards = [];
 let matchedPairs = 0;
 let cardsArray = [];
 
-// Cargar imágenes desde datos-memory.json
-fetch('../data/datos-memory.json')
-  .then(res => res.json())
-  .then(data => {
-    iniciarJuego(data);
-  })
-  .catch(err => {
-    console.error('Error cargando datos:', err);
-    message.textContent = 'No se pudo cargar el juego.';
-  });
-
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -31,9 +20,9 @@ function iniciarJuego(imagenesDisponibles) {
   flippedCards = [];
   matchedPairs = 0;
 
-  // Tomamos solo las primeras 15 imágenes para 30 cartas
+  // Usamos las primeras 15 imágenes y las duplicamos para parejas
   const seleccionadas = imagenesDisponibles.slice(0, 15);
-  cardsArray = [...seleccionadas, ...seleccionadas]; // duplicar para parejas
+  cardsArray = [...seleccionadas, ...seleccionadas];
   shuffle(cardsArray);
 
   cardsArray.forEach(imgObj => {
@@ -52,7 +41,6 @@ function iniciarJuego(imagenesDisponibles) {
     board.appendChild(card);
   });
 
-  // Forzamos la grilla 6x5 (6 columnas, 5 filas)
   board.style.gridTemplateColumns = 'repeat(6, 100px)';
   board.style.gridTemplateRows = 'repeat(5, 100px)';
 }
@@ -82,20 +70,21 @@ function checkForMatch() {
     if (matchedPairs === 15) {
       message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
 
-      // Guardar progreso en localStorage
+      // Guardar progreso
       const nombre = localStorage.getItem('usuario') || 'Peque';
       const claveProgreso = 'progresoNivel5_' + nombre;
-      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { memory: false };
-
+      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+        contar: false,
+        puzzle: false,
+        memory: false,
+        letras: false
+      };
       progreso.memory = true;
       localStorage.setItem(claveProgreso, JSON.stringify(progreso));
 
-      setTimeout(() => {
-        window.location.href = '../niveles/nivel-5.html';
-      }, 2000);
+      setTimeout(() => window.location.href = '../niveles/nivel-5.html', 2000);
     }
   } else {
-    // Si no coinciden, quitar flipped para dar vuelta de nuevo
     card1.classList.remove('flipped');
     card2.classList.remove('flipped');
   }
@@ -103,21 +92,21 @@ function checkForMatch() {
   flippedCards = [];
 }
 
-// Reiniciar juego al hacer click en el botón
+// Reiniciar juego con botón
 resetBtn.addEventListener('click', () => {
   fetch('../data/datos-memory.json')
     .then(res => res.json())
     .then(data => iniciarJuego(data));
 });
 
-// Iniciar juego al cargar la página
+// Iniciar juego al cargar página
 document.addEventListener('DOMContentLoaded', () => {
   fetch('../data/datos-memory.json')
     .then(res => res.json())
     .then(data => iniciarJuego(data));
 });
 
-// Botón para volver a nivel 5
+// Botón volver al nivel 5
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-5.html';
 };

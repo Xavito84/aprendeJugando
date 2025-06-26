@@ -1,23 +1,23 @@
-// Obtener o establecer nombre del usuario
-const nombre = localStorage.getItem('usuario') || 'Peque';
+// Obtener el objeto usuario desde localStorage
+const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+const nombre = user.nombre;
+
+// Mostrar el nombre en el saludo
 document.getElementById('nombreUsuario').textContent = nombre;
 
 // Crear una clave única por usuario
 const claveProgreso = 'progresoNivel4_' + nombre;
 
-// Cargar progreso específico del usuario o crear nuevo
+// Cargar progreso del nivel 4
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
-  
   letras: false,
   puzzle: false,
   memory: false,
   contar: false
-  
 };
 
-// Actualizar visualmente el progreso
+// Mostrar el progreso visualmente
 function actualizarProgreso() {
- 
   document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
   document.getElementById('progreso-puzzle').textContent = progreso.puzzle ? '✅' : '❌';
   document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
@@ -25,16 +25,15 @@ function actualizarProgreso() {
   document.getElementById('progreso-total').textContent =
     `${Object.values(progreso).filter(v => v).length} / ${Object.keys(progreso).length}`;
   document.getElementById('progreso-usuario').textContent = nombre;
-  
 }
 actualizarProgreso();
 
-// Función para ir al juego
+// Ir al juego
 function irAJuego(juego) {
   window.location.href = `../juegos/${juego}-4.html`;
 }
 
-// Cerrar sesión: solo borra datos del usuario actual
+// Cerrar sesión
 function cerrarSesion() {
   const confirmar = confirm('¿Estás seguro de que quieres cerrar sesión?');
 

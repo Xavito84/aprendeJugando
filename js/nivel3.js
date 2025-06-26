@@ -1,9 +1,11 @@
-// Obtener o establecer nombre del usuario
-const nombre = localStorage.getItem('usuario') || 'Peque';
-document.getElementById('nombreUsuario').textContent = nombre;
+// Obtener objeto usuario desde localStorage
+const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
 
-// Crear una clave única por usuario
-const claveProgreso = 'progresoNivel3_' + nombre;
+// Mostrar el nombre
+document.getElementById('nombreUsuario').textContent = user.nombre;
+
+// Crear clave de progreso específica del usuario
+const claveProgreso = 'progresoNivel3_' + user.nombre;
 
 // Cargar progreso específico del usuario o crear nuevo
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
@@ -30,7 +32,7 @@ function irAJuego(juego) {
     colores: 'colores.html',
     formas: 'formas.html',
     letras: 'letras.html',
-    memory: 'memory-3.html',  
+    memory: 'memory-3.html',
     contar: 'contar.html'
   };
 
@@ -41,14 +43,13 @@ function irAJuego(juego) {
   }
 }
 
-
-// Cerrar sesión: solo borra datos del usuario actual
+// Cerrar sesión
 function cerrarSesion() {
   const confirmar = confirm('¿Estás seguro de que quieres cerrar sesión?');
 
   if (confirmar) {
     localStorage.clear();
-    alert('Has cerrado sesión correctamente. ¡Hasta luego, ' + nombre + '! 😊');
+    alert('Has cerrado sesión correctamente. ¡Hasta luego, ' + user.nombre + '! 😊');
     window.location.href = '../pages/inicio.html';
   }
 }
