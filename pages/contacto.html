@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <title>AprendeJugando</title>
   <link rel="stylesheet" href="../style.css">
 </head>
+
 <body>
   <header>
     <h1>AprendeJugando</h1>
@@ -19,28 +21,37 @@
       </ul>
     </nav>
   </header>
-
-  <main>
-   
-
+  <div class="container">
     <section id="contacto">
-  <h2>Contacto</h2>
-  <p>Si tienes preguntas, sugerencias o quieres colaborar con AprendeJugando, puedes contactarnos mediante el siguiente formulario:</p>
-  <form class="contact-form" action="#" method="post">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" required>
+      <h2>Contacto</h2>
+      <p>Si tienes preguntas, sugerencias o quieres colaborar con AprendeJugando, puedes contactarnos mediante el
+        siguiente formulario:</p>
 
-    <label for="email">Correo electrónico:</label>
-    <input type="email" id="email" name="email" required>
+      <form action="https://formsubmit.co/toyguay18@hotmail.com" method="POST">
 
-    <label for="mensaje">Mensaje:</label>
-    <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+        <label for="nombre">Nombre: <span style="color:red;">*</span></label>
+        <input type="text" id="nombre" name="nombre" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}"
+          title="Introduce solo letras y espacios (mínimo 2 caracteres)">
 
-    <input type="submit" value="Enviar">
-  </form>
-</section>
+        <label for="email">Correo electrónico: <span style="color:red;">*</span></label>
+        <input type="email" id="email" name="email" required placeholder="nombre@correo.com">
 
-  </main>
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}"
+          title="Introduce un número de 9 cifras sin espacios ni guiones">
+
+        <label for="mensaje">Mensaje o pregunta: <span style="color:red;">*</span></label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+        <p style="font-size: 0.9em;"><span style="color:red;">*</span> Campos obligatorios</p>
+
+        <button type="submit">Enviar</button>
+
+        <input type="hidden" name="_next" value="https://xavito84.github.io/aprendeJugando/gracias.html">
+        <input type="hidden" name="_captcha" value="false">
+      </form>
+    </section>
+  </div>
 
   <script src="../js/validacionForm.js"></script>
 
@@ -48,4 +59,5 @@
     <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>
   </footer>
 </body>
+
 </html>
