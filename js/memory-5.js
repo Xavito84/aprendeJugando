@@ -1,3 +1,29 @@
+// --- Módulo progreso ---
+
+const nombreUsuario = JSON.parse(localStorage.getItem('usuario'))?.nombre || 'Peque';
+const claveProgreso = 'progresoNivel5_' + nombreUsuario;
+
+let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+  contar: false,
+  puzzle: false,
+  memory: false,
+  letras: false,
+};
+
+function guardarProgreso() {
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+}
+
+function marcarModuloCompletado(modulo) {
+  if (!progreso[modulo]) {
+    progreso[modulo] = true;
+    guardarProgreso();
+    console.log(`Módulo "${modulo}" completado.`);
+  }
+}
+
+// --- Código juego Memory ---
+
 const board = document.getElementById('memory-board');
 const message = document.getElementById('mensaje');
 const resetBtn = document.getElementById('reset-btn');
@@ -20,7 +46,6 @@ function iniciarJuego(imagenesDisponibles) {
   flippedCards = [];
   matchedPairs = 0;
 
-  // Usamos las primeras 15 imágenes y las duplicamos para parejas
   const seleccionadas = imagenesDisponibles.slice(0, 15);
   cardsArray = [...seleccionadas, ...seleccionadas];
   shuffle(cardsArray);
@@ -70,17 +95,7 @@ function checkForMatch() {
     if (matchedPairs === 15) {
       message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
 
-      // Guardar progreso
-      const nombre = localStorage.getItem('usuario') || 'Peque';
-      const claveProgreso = 'progresoNivel5_' + nombre;
-      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
-        contar: false,
-        puzzle: false,
-        memory: false,
-        letras: false
-      };
-      progreso.memory = true;
-      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+      marcarModuloCompletado('memory');
 
       setTimeout(() => window.location.href = '../niveles/nivel-5.html', 2000);
     }
@@ -92,21 +107,18 @@ function checkForMatch() {
   flippedCards = [];
 }
 
-// Reiniciar juego con botón
 resetBtn.addEventListener('click', () => {
   fetch('../data/datos-memory.json')
     .then(res => res.json())
     .then(data => iniciarJuego(data));
 });
 
-// Iniciar juego al cargar página
 document.addEventListener('DOMContentLoaded', () => {
   fetch('../data/datos-memory.json')
     .then(res => res.json())
     .then(data => iniciarJuego(data));
 });
 
-// Botón volver al nivel 5
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-5.html';
 };

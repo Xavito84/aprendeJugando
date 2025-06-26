@@ -8,6 +8,24 @@ let matchedPairs = 0;
 let cardsArray = [];
 let allImages = [];
 
+// Centraliza guardar progreso y redirigir
+function completarJuego(nivel, juego) {
+  const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+  const nombre = user.nombre;
+  const claveProgreso = `progresoNivel${nivel}_` + nombre;
+  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {};
+
+  progreso[juego] = true;
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+
+  alert('¡Juego completado! Redirigiendo...');
+
+  setTimeout(() => {
+    window.location.href = `../niveles/nivel-${nivel}.html`;
+  }, 1500);
+}
+
+
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -72,17 +90,7 @@ function checkForMatch() {
 
     if (matchedPairs === 3) {
       message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
-
-      const nombre = localStorage.getItem('usuario') || 'Peque';
-      const claveProgreso = 'progresoNivel3_' + nombre;
-      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false, memory: false };
-
-      progreso.memory = true;
-      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
-
-      setTimeout(() => {
-        window.location.href = '../niveles/nivel-3.html';
-      }, 2000);
+      completarJuego(3, 'memory'); // nivel 3, juego memory
     }
   } else {
     card1.classList.remove('flipped');

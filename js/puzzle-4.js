@@ -1,3 +1,29 @@
+// --- Módulo progreso (igual que en memory) ---
+
+const nombreUsuario = JSON.parse(localStorage.getItem('usuario'))?.nombre || 'Peque';
+const claveProgreso = 'progresoNivel4_' + nombreUsuario;
+
+let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+  contar: false,
+  puzzle: false,
+  memory: false,
+  letras: false,
+};
+
+function guardarProgreso() {
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+}
+
+function marcarModuloCompletado(modulo) {
+  if (!progreso[modulo]) {
+    progreso[modulo] = true;
+    guardarProgreso();
+    console.log(`Módulo "${modulo}" completado.`);
+  }
+}
+
+// --- Código del puzzle ---
+
 const contenedorPuzzle = document.getElementById("puzzle");
 const zonas = document.getElementById("zonaDestino");
 const mensaje = document.getElementById("mensaje");
@@ -45,7 +71,7 @@ function iniciarPuzzle(puzzle) {
   for (let i = 1; i <= 4; i++) {
     const div = document.createElement("div");
     div.classList.add("zona");
-    div.dataset.destino = i;
+    div.dataset.destino = i.toString();
     div.addEventListener("dragover", permitirSoltar);
     div.addEventListener("drop", soltar);
     zonas.appendChild(div);
@@ -90,19 +116,13 @@ function soltar(e) {
       finalImg.classList.add("final");
       zonas.appendChild(finalImg);
 
-      // ✅ GUARDAR PROGRESO EN localStorage
-      const nombre = localStorage.getItem('usuario') || 'Peque';
-      const claveProgreso = 'progresoNivel4_' + nombre;
-      let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {};
-      progreso.puzzle = true;
-      localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+      // Marcar módulo completado
+      marcarModuloCompletado('puzzle');
 
       setTimeout(() => {
         window.location.href = "../niveles/nivel-4.html";
       }, 3000);
     }
-
-
   }
 }
 

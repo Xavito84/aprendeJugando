@@ -4,20 +4,21 @@ fetch('../data/datos-letras.json')
   .then(response => response.json())
   .then(data => {
     items = data;
-    mostrarPregunta(); 
+    mostrarPregunta();
   })
   .catch(error => console.error('Error cargando JSON:', error));
-
-
 
 let currentLetter = null;
 let correctItem = null;
 let letrasUsadas = [];
-let aciertos = 0; // contador de respuestas correctas
+let aciertos = 0;
 
 const sonidoAplauso = document.getElementById('aplauso');
+const feedback = document.getElementById('mensaje');
+const optionsDiv = document.getElementById('opciones');
 
-// Habilitar sonido con primer clic (política del navegador)
+let esperando = false;
+
 window.addEventListener("click", () => {
   sonidoAplauso.play().catch(() => {});
 }, { once: true });
@@ -27,6 +28,7 @@ function shuffle(array) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }
 
 function elegirNuevaLetra() {
@@ -36,37 +38,43 @@ function elegirNuevaLetra() {
 }
 
 function mostrarPregunta() {
-  const feedback = document.getElementById('mensaje');
-  feedback.textContent = '';
-
-  // Si ya respondió 10 letras, termina el juego
   if (aciertos >= 10) {
     document.getElementById('letraActual').textContent = '';
     document.getElementById('pregunta').textContent = '';
-    document.getElementById('opciones').innerHTML = '';
+    optionsDiv.innerHTML = '';
     feedback.textContent = "🎉 ¡Has acertado 10 letras! 🎉";
     feedback.style.color = 'green';
 
-    // Guardar progreso en localStorage
     const nombre = localStorage.getItem('usuario') || 'Peque';
     const claveProgreso = 'progresoNivel3_' + nombre;
-    let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false, letras: false, memory: false };
 
-    progreso.letras = true;  // Marcar letras como completado
+    // Obtener progreso actual o crear uno nuevo por defecto
+    let progreso = localStorage.getItem(claveProgreso);
+    if (progreso) {
+      try {
+        progreso = JSON.parse(progreso);
+      } catch {
+        progreso = { colores: false, formas: false, letras: false, memory: false };
+      }
+    } else {
+      progreso = { colores: false, formas: false, letras: false, memory: false };
+    }
 
+    // Actualizar el progreso de letras
+    progreso.letras = true;
     localStorage.setItem(claveProgreso, JSON.stringify(progreso));
 
-    // Redirigir tras 2 segundos
     setTimeout(() => {
       window.location.href = '../niveles/nivel-3.html';
     }, 2000);
-
     return;
   }
 
+  esperando = false;
+  feedback.textContent = '';
+
   const nuevaLetra = elegirNuevaLetra();
   if (!nuevaLetra) {
-    // No hay más letras disponibles, igual terminar
     feedback.textContent = "🎉 ¡Has completado todas las letras disponibles! 🎉";
     feedback.style.color = 'green';
     return;
@@ -85,11 +93,11 @@ function mostrarPregunta() {
   let allOptions = [correctItem, ...opcionesIncorrectas];
   shuffle(allOptions);
 
-  const optionsDiv = document.getElementById('opciones');
   optionsDiv.innerHTML = '';
   allOptions.forEach(option => {
     const div = document.createElement('div');
     div.className = 'option';
+    div.tabIndex = 0; // accesibilidad
     div.innerHTML = `<img src="${option.img}" alt="${option.word}" style="width: 220px; height: 180px; object-fit: contain; border-radius: 14px;">`;
     div.onclick = () => checkAnswer(option.letter);
     optionsDiv.appendChild(div);
@@ -97,7 +105,9 @@ function mostrarPregunta() {
 }
 
 function checkAnswer(selectedLetter) {
-  const feedback = document.getElementById('mensaje');
+  if (esperando) return;
+  esperando = true;
+
   if (selectedLetter === currentLetter) {
     sonidoAplauso.currentTime = 0;
     sonidoAplauso.play();
@@ -106,10 +116,8 @@ function checkAnswer(selectedLetter) {
     feedback.style.color = 'green';
 
     letrasUsadas.push(currentLetter);
-    aciertos++; // sumamos un acierto
+    aciertos++;
 
-    // Bloquear opciones para evitar doble clic
-    const optionsDiv = document.getElementById('opciones');
     Array.from(optionsDiv.children).forEach(div => div.style.pointerEvents = 'none');
 
     setTimeout(() => {
@@ -118,6 +126,13 @@ function checkAnswer(selectedLetter) {
   } else {
     feedback.textContent = 'Incorrecto. Intenta de nuevo.';
     feedback.style.color = 'red';
+
+    Array.from(optionsDiv.children).forEach(div => div.style.pointerEvents = 'none');
+    setTimeout(() => {
+      feedback.textContent = '';
+      Array.from(optionsDiv.children).forEach(div => div.style.pointerEvents = 'auto');
+      esperando = false;
+    }, 1000);
   }
 }
 

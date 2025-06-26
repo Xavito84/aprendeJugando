@@ -1,8 +1,4 @@
-// Variables globales para progreso
-const nombre = localStorage.getItem('usuario') || 'Peque';
-const claveProgreso = 'progresoNivel3_' + nombre;
-let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { colores: false, formas: false };
-
+// --- Datos iniciales ---
 const formas = [
   { nombre: 'Círculo', imagen: '../assets/img/circulo.png' },
   { nombre: 'Cuadrado', imagen: '../assets/img/cuadrado.png' },
@@ -13,63 +9,92 @@ const formas = [
   { nombre: 'Óvalo', imagen: '../assets/img/ovalo.png' },
 ];
 
+// --- Variables juego ---
 let aciertos = 0;
 const totalAciertos = 10;
-
 let formasRestantes = [...formas];
 
+// --- Elementos DOM ---
 const preguntaTexto = document.getElementById('pregunta');
 const opcionesDiv = document.getElementById('opciones');
 const mensaje = document.getElementById('mensaje');
 const sonidoAplauso = document.getElementById('aplauso');
 
+// --- Config audio ---
 sonidoAplauso.volume = 1;
 sonidoAplauso.muted = false;
-
 window.addEventListener("click", () => {
-  sonidoAplauso.play().catch(() => { });
+  sonidoAplauso.play().catch(() => {});
 }, { once: true });
 
+// --- Obtener usuario ---
+function obtenerUsuario() {
+  const userRaw = localStorage.getItem('usuario');
+  try {
+    return JSON.parse(userRaw) || { nombre: 'Peque' };
+  } catch {
+    return { nombre: 'Peque' };
+  }
+}
+
+// --- Guardar progreso ---
+function completarJuego(nivel, juego) {
+  const user = obtenerUsuario();
+  const claveProgreso = `progresoNivel${nivel}_` + user.nombre;
+  
+  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+    colores: false,
+    formas: false,
+    letras: false,
+    memory: false,
+    contar: false
+  };
+  
+  progreso[juego] = true;
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+}
+
+// --- Mezclar array ---
 function mezclar(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  for (let i = array.length -1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
 }
 
+// --- Mostrar pregunta ---
 function mostrarPregunta() {
   if (formasRestantes.length < 1 || aciertos >= totalAciertos) {
-  mensaje.innerHTML = `<strong>🎉 ¡Completaste el juego!</strong><br/>Redirigiendo...`;
-  setTimeout(() => {
-    localStorage.setItem(claveProgreso, JSON.stringify({ colores: true, formas: true, letras: false, memory: false }));
-    window.location.href = '../niveles/nivel-3.html';
-  }, 2000);
-  return;
-}
+    mensaje.innerHTML = `<strong>🎉 ¡Completaste el juego!</strong><br/>Redirigiendo...`;
 
+    completarJuego(3, 'formas');
 
-  const opciones = mezclar([...formas]).slice(0, 3);
-  const opcionesValidas = opciones.filter(f => formasRestantes.some(fr => fr.nombre === f.nombre));
-
-  if (opcionesValidas.length < 1) {
-    mostrarPregunta();
+    setTimeout(() => {
+      window.location.href = '../niveles/nivel-3.html';
+    }, 2000);
     return;
   }
 
-  const correcta = opcionesValidas[Math.floor(Math.random() * opcionesValidas.length)];
+  const correcta = formasRestantes[Math.floor(Math.random() * formasRestantes.length)];
+
+  // Tomar 2 opciones incorrectas al azar
+  let opciones = formas.filter(f => f.nombre !== correcta.nombre);
+  opciones = mezclar(opciones).slice(0, 2);
+  opciones.push(correcta);
+  opciones = mezclar(opciones);
 
   preguntaTexto.textContent = `¿Dónde está el ${correcta.nombre.toLowerCase()}?`;
   opcionesDiv.innerHTML = '';
   mensaje.textContent = '';
 
-  opciones.forEach((forma) => {
+  opciones.forEach(forma => {
     const img = document.createElement('img');
     img.src = forma.imagen;
     img.alt = forma.nombre;
     img.className = 'opcion-img';
 
-    // Ajustes de tamaño para Rectángulo y Óvalo
+    // Ajustar tamaños especiales
     if (forma.nombre === 'Rectángulo') {
       img.style.width = '180px';
       img.style.height = '100px';
@@ -99,9 +124,7 @@ function mostrarPregunta() {
 
         opcionesDiv.querySelectorAll('img').forEach(el => el.style.pointerEvents = 'none');
 
-        setTimeout(() => {
-          mostrarPregunta();
-        }, 1500);
+        setTimeout(() => mostrarPregunta(), 1500);
       } else {
         mensaje.textContent = "Intenta otra vez 🙃";
         img.style.border = '4px solid #f44336';
@@ -116,16 +139,17 @@ function mostrarPregunta() {
   });
 }
 
+// --- Botones ---
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-3.html';
 };
 
-mostrarPregunta();
-
-// Botón para reiniciar el juego
 document.getElementById('btnReiniciar').onclick = () => {
   aciertos = 0;
   formasRestantes = [...formas];
   mensaje.textContent = '';
   mostrarPregunta();
 };
+
+// --- Inicio ---
+mostrarPregunta();

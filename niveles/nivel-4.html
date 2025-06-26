@@ -29,30 +29,35 @@
     <div id="progreso">
       <p>Tu progreso:</p>
       <ul>
-        
+
         <li>Letras: <span id="progreso-letras">❌</span></li>
         <li>Puzzle: <span id="progreso-puzzle">❌</span></li>
         <li>Memory: <span id="progreso-memory">❌</span></li>
         <li>Contar: <span id="progreso-contar">❌</span></li>
-        
+
       </ul>
     </div>
 
     <h3>Elige un juego para empezar:</h3>
     <div class="juegos">
-     
-      
-      <button class="boton-juego" onclick="irAJuego('letras')">🔤 Letras</button>
-      <button class="boton-juego" onclick="irAJuego('puzzle')">🧩 Puzzle</button>
-      <button class="boton-juego" onclick="irAJuego('memory')">🧠 Memory</button>
-      <button class="boton-juego" onclick="irAJuego('contar')">🔢 Contar</button>
+
+
+
+
+      <button class="boton-juego" onclick="irAJuego('letras')">🔤 Juego Letras</button>
+      <button class="boton-juego" onclick="irAJuego('puzzle')">🧩 Juego Puzzle</button>
+      <button class="boton-juego" onclick="irAJuego('memory')">🧠 Juego Memory</button>
+      <button class="boton-juego" onclick="irAJuego('contar')">🧮 Juego Contar</button>
+
+
     </div>
 
     <br /><br />
     <button onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 
-  <script src="../js/nivel4.js"></script>
+  <script src="../js/nivel4.js" defer></script>
+  <script src="../js/progreso.js" defer></script>
 
   <footer>
     <p>&copy; 2025 AprendeJugando. Todos los derechos reservados.</p>

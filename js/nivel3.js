@@ -1,13 +1,7 @@
-// Obtener objeto usuario desde localStorage
+// Obtener usuario y progreso
 const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
-
-// Mostrar el nombre
-document.getElementById('nombreUsuario').textContent = user.nombre;
-
-// Crear clave de progreso específica del usuario
 const claveProgreso = 'progresoNivel3_' + user.nombre;
 
-// Cargar progreso específico del usuario o crear nuevo
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   colores: false,
   formas: false,
@@ -16,17 +10,26 @@ let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   contar: false
 };
 
-// Actualizar visualmente el progreso
-function actualizarProgreso() {
-  document.getElementById('progreso-colores').textContent = progreso.colores ? '✅' : '❌';
-  document.getElementById('progreso-formas').textContent = progreso.formas ? '✅' : '❌';
-  document.getElementById('progreso-letras').textContent = progreso.letras ? '✅' : '❌';
-  document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
-  document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
+// Mostrar nombre
+function mostrarNombreUsuario() {
+  const nombreElem = document.getElementById('nombreUsuario');
+  if (nombreElem) {
+    nombreElem.textContent = user.nombre;
+  }
 }
-actualizarProgreso();
 
-// Función para ir al juego
+// Actualizar la UI del progreso
+function actualizarProgreso() {
+  const juegos = ['colores', 'formas', 'letras', 'memory', 'contar'];
+  juegos.forEach(juego => {
+    const elem = document.getElementById(`progreso-${juego}`);
+    if (elem) {
+      elem.textContent = progreso[juego] ? '✅' : '❌';
+    }
+  });
+}
+
+// Navegar a un juego libremente
 function irAJuego(juego) {
   const rutas = {
     colores: 'colores.html',
@@ -43,13 +46,31 @@ function irAJuego(juego) {
   }
 }
 
+// Marcar juego como completado (esta función la llamarás desde cada juego cuando termines)
+function marcarJuegoCompletado(juego) {
+  if (progreso[juego] === false) {
+    progreso[juego] = true;
+    localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+    actualizarProgreso();
+  }
+}
+
 // Cerrar sesión
 function cerrarSesion() {
-  const confirmar = confirm('¿Estás seguro de que quieres cerrar sesión?');
-
-  if (confirmar) {
+  if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
     localStorage.clear();
-    alert('Has cerrado sesión correctamente. ¡Hasta luego, ' + user.nombre + '! 😊');
+    alert(`Has cerrado sesión correctamente. ¡Hasta luego, ${user.nombre}! 😊`);
     window.location.href = '../pages/inicio.html';
   }
 }
+
+// Inicializar UI
+document.addEventListener('DOMContentLoaded', () => {
+  mostrarNombreUsuario();
+  actualizarProgreso();
+});
+
+// Hacer funciones accesibles globalmente para que puedas llamarlas desde otros scripts
+window.irAJuego = irAJuego;
+window.marcarJuegoCompletado = marcarJuegoCompletado;
+window.cerrarSesion = cerrarSesion;

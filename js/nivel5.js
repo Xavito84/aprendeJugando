@@ -1,46 +1,57 @@
-// Obtener nombre del usuario desde localStorage
-const nombre = localStorage.getItem('usuario') || 'Peque';
-document.getElementById('progreso-usuario').textContent = nombre;
+// Obtener objeto usuario desde localStorage
+const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+const nombre = user.nombre;
 
-// Clave de progreso única para este usuario en el Nivel 5
+// Mostrar el nombre del usuario
+const nombreElem = document.getElementById('progreso-usuario');
+if (nombreElem) {
+  nombreElem.textContent = nombre;
+}
+
+// Clave única para el progreso del nivel 5
 const claveProgreso = 'progresoNivel5_' + nombre;
 
-// Obtener progreso o crear uno nuevo
+// Cargar o inicializar progreso
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   memory: false,
   contar: false,
   puzzle: false
 };
 
-// Mostrar el progreso visualmente
+// Actualizar el progreso visual
 function actualizarProgreso() {
-  document.getElementById('progreso-memory').textContent = progreso.memory ? '✅' : '❌';
-  document.getElementById('progreso-contar').textContent = progreso.contar ? '✅' : '❌';
-  document.getElementById('progreso-puzzle').textContent = progreso.puzzle ? '✅' : '❌';
+  ['memory', 'contar', 'puzzle'].forEach(juego => {
+    const elem = document.getElementById('progreso-' + juego);
+    if (elem) {
+      elem.textContent = progreso[juego] ? '✅' : '❌';
+      elem.style.color = progreso[juego] ? 'green' : 'red';
+    }
+  });
 
-  // Estilo opcional (verde o rojo)
-  document.getElementById('progreso-memory').style.color = progreso.memory ? 'green' : 'red';
-  document.getElementById('progreso-contar').style.color = progreso.contar ? 'green' : 'red';
-  document.getElementById('progreso-puzzle').style.color = progreso.puzzle ? 'green' : 'red';
+  const totalCompletados = Object.values(progreso).filter(Boolean).length;
+  const totalJuegos = Object.keys(progreso).length;
 
-  // Total completado
-  const total = Object.values(progreso).filter(Boolean).length;
-  const totalMax = Object.keys(progreso).length;
-  document.getElementById('progreso-total').textContent = `${total} / ${totalMax}`;
+  const totalElem = document.getElementById('progreso-total');
+  if (totalElem) {
+    totalElem.textContent = `${totalCompletados} / ${totalJuegos}`;
+  }
 }
 actualizarProgreso();
 
-// Botón para acceder a un juego
+// Navegar a un juego concreto
 function irAJuego(juego) {
   window.location.href = `../juegos/${juego}-5.html`;
 }
 
-// Cerrar sesión
+// Cerrar sesión limpiando localStorage
 function cerrarSesion() {
-  const confirmar = confirm('¿Estás seguro de que quieres cerrar sesión?');
-  if (confirmar) {
+  if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
     localStorage.clear();
     alert(`Has cerrado sesión correctamente. ¡Hasta luego, ${nombre}!`);
     window.location.href = '../pages/inicio.html';
   }
 }
+
+// Exportar funciones para uso en HTML
+window.irAJuego = irAJuego;
+window.cerrarSesion = cerrarSesion;

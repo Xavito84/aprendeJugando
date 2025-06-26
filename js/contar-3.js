@@ -1,75 +1,100 @@
-const nombre = localStorage.getItem('usuario') || 'Peque';
-const progresoKey = 'progresoNivel3_' + nombre;
-let progreso = JSON.parse(localStorage.getItem(progresoKey)) || { contar: false };
+const nivel = 3;
+const claveProgreso = 'progresoNivel' + nivel;
+let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || { contar: false };
 
 let datos = [];
 let aciertos = 0;
 const maxAciertos = 10;
 
+const tipoObjetoSpan = document.getElementById("tipoObjeto");
+const zonaImagenes = document.getElementById("zonaImagenes");
+const opcionesNumeros = document.getElementById("opcionesNumeros");
+const mensaje = document.getElementById("mensaje");
+const btnVolver = document.getElementById("btnVolver");
 const aplauso = document.getElementById("aplauso");
-aplauso.volume = 1;
-window.addEventListener("click", () => aplauso.play().catch(() => {}), { once: true });
 
-fetch('../data/datos-contar.json')
-  .then(res => res.json())
-  .then(data => {
-    datos = data;
-    siguientePregunta();
-  });
+window.addEventListener("click", () => {
+  aplauso.play().catch(() => {});
+}, { once: true });
+
+function guardarProgreso() {
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+}
 
 function siguientePregunta() {
   if (aciertos >= maxAciertos) {
-    document.getElementById("mensaje").textContent = "¡Juego completado! Redirigiendo...";
+    mensaje.textContent = "🎉 ¡Juego completado! Redirigiendo...";
     progreso.contar = true;
-    localStorage.setItem(progresoKey, JSON.stringify(progreso));
-    setTimeout(() => window.location.href = "../niveles/nivel-3.html", 2000);
+    guardarProgreso();
+    setTimeout(() => {
+      window.location.href = "../niveles/nivel-3.html";
+    }, 2000);
     return;
   }
+
+  mensaje.textContent = "";
 
   const item = datos[Math.floor(Math.random() * datos.length)];
   const cantidad = Math.floor(Math.random() * (item.max + 1 - item.min)) + item.min;
 
-  document.getElementById("tipoObjeto").textContent = item.nombre;
+  tipoObjetoSpan.textContent = item.nombre;
 
-  const zona = document.getElementById("zonaImagenes");
-  zona.innerHTML = '';
+  zonaImagenes.innerHTML = '';
   for (let i = 0; i < cantidad; i++) {
     const img = document.createElement("img");
     img.src = item.imagen;
     img.alt = item.nombre;
     img.style.width = "80px";
     img.style.margin = "5px";
-    zona.appendChild(img);
+    zonaImagenes.appendChild(img);
   }
 
   const opciones = [cantidad];
   while (opciones.length < 3) {
-    const r = Math.floor(Math.random() * 10) + 1;
-    if (!opciones.includes(r)) opciones.push(r);
+    const num = Math.floor(Math.random() * 10) + 1;
+    if (!opciones.includes(num)) opciones.push(num);
   }
 
   opciones.sort(() => Math.random() - 0.5);
 
-  const divOpciones = document.getElementById("opcionesNumeros");
-  divOpciones.innerHTML = '';
+  opcionesNumeros.innerHTML = '';
   opciones.forEach(n => {
     const btn = document.createElement("button");
     btn.textContent = n;
     btn.onclick = () => {
       if (n === cantidad) {
         aciertos++;
-        document.getElementById("mensaje").textContent = "¡Correcto!";
+        mensaje.textContent = "¡Correcto! 🎉";
         aplauso.currentTime = 0;
         aplauso.play();
         setTimeout(siguientePregunta, 1200);
       } else {
-        document.getElementById("mensaje").textContent = "Intenta de nuevo.";
+        mensaje.textContent = "Intenta de nuevo.";
       }
     };
-    divOpciones.appendChild(btn);
+    opcionesNumeros.appendChild(btn);
   });
 }
 
-document.getElementById("btnVolver").onclick = () => {
+btnVolver.onclick = () => {
   window.location.href = "../niveles/nivel-3.html";
 };
+
+// Cargar datos JSON externo y comenzar
+fetch('../data/datos-contar.json')
+  .then(res => {
+    if (!res.ok) throw new Error("No se pudo cargar el JSON");
+    return res.json();
+  })
+  .then(jsonDatos => {
+    datos = jsonDatos;
+    if (!Array.isArray(datos) || datos.length === 0) {
+      mensaje.textContent = "No hay datos para jugar.";
+      return;
+    }
+    siguientePregunta();
+  })
+  .catch(e => {
+    console.error("Error cargando datos:", e);
+    mensaje.textContent = "Error cargando datos.";
+  });

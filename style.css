@@ -95,6 +95,7 @@ nav a:focus {
   outline: none;
   box-shadow: 0 4px 12px var(--color-shadow);
 }
+
 @media (max-width: 768px) {
   header {
     padding: 1rem 0.5rem;
@@ -169,6 +170,7 @@ main {
   padding-left: 1em;
   list-style: none;
 }
+
 .container button {
   margin: 10px;
 }
@@ -259,67 +261,51 @@ select:focus {
 }
 
 /* JUEGO DE COLORES */
-.container h1 {
-  font-size: 2.4rem;
-  color: var(--color-primario);
+#pregunta {
+  font-size: 1.5rem;
   margin-bottom: 1rem;
-  text-shadow: 1px 1px 4px var(--color-shadow);
-}
-
-.container p {
-  font-size: 1.3rem;
-  margin-bottom: 1.8rem;
-  color: var(--color-texto-secundario);
-  font-weight: 600;
 }
 
 #opciones {
   display: flex;
-  gap: 20px;
   justify-content: center;
+  gap: 20px;
   flex-wrap: wrap;
-  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .opcion {
   width: 120px;
   height: 120px;
-  margin-bottom: 20px;
   border-radius: 25px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  cursor: pointer;
+  font-weight: bold;
   font-size: 1.2rem;
   user-select: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* el color de fondo y texto lo pone el JS inline */
+  color: white;
+  transition: transform 0.3s, border 0.3s;
 }
 
-.opcion:hover,
-.opcion:focus {
-  box-shadow: 0 12px 20px rgba(247, 183, 51, 0.8);
-  transform: scale(1.15);
-  outline: none;
-}
-
-#btnVolver {
-  color: var(--color-texto);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
+.opcion:hover {
+  transform: scale(1.1);
 }
 
 #mensaje {
-  margin-top: 2rem;
-  font-size: 1.2rem;
-  color: var(--color-texto-secundario);
   font-weight: 600;
-  text-align: center;
-  margin-bottom: 10px;
+  font-size: 1.2rem;
+  height: 2rem;
+  margin-bottom: 1rem;
 }
 
+button {
+  margin: 0 10px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
 
 /**Juego de letras */
 .letter {
@@ -422,14 +408,16 @@ select:focus {
   margin-top: 20px;
   justify-content: center;
 }
+
 #memory-board2 {
   display: grid;
   grid-template-columns: repeat(5, 110px);
   grid-template-rows: repeat(4, 110px);
-  grid-gap: 15px;
-  margin-top: 20px;
+  gap: 15px;
   justify-content: center;
+  margin-top: 20px;
 }
+
 .tablero-6x5 {
   display: grid;
   grid-template-columns: repeat(6, 110px);
@@ -449,8 +437,7 @@ select:focus {
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  user-select: none;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
 
@@ -475,24 +462,21 @@ select:focus {
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  text-align: center;
 }
 
-#reset-btn {
-  margin-top: 25px;
+button {
+  margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
   background-color: #ffb74d;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-#reset-btn:hover {
+button:hover {
   background-color: #ffa726;
 }
-
 
 /**NIVEL 4**/
 
@@ -502,7 +486,7 @@ select:focus {
   height: 180px;
   border-radius: 20px;
   border: 4px solid #ff6f91;
-  box-shadow: 0 5px 15px rgba(255,111,145,0.3);
+  box-shadow: 0 5px 15px rgba(255, 111, 145, 0.3);
   object-fit: cover;
   margin-bottom: 25px;
 }
@@ -544,7 +528,7 @@ select:focus {
   font-size: 36px;
   font-weight: 800;
   cursor: grab;
-  box-shadow: 0 6px 12px rgba(255,111,145,0.5);
+  box-shadow: 0 6px 12px rgba(255, 111, 145, 0.5);
   user-select: none;
   transition: transform 0.2s ease;
 }
@@ -775,13 +759,27 @@ button {
 
 
 
-/**Contar**/
+/** Contar **/
+
+#zonaImagenes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 15px 0;
+  min-height: 100px;
+}
+
+#zonaImagenes img {
+  width: 80px;
+  margin: 5px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ccc;
+}
+
 .zona-juego {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
-  flex-wrap: wrap;
   margin: 20px 0;
 }
 
@@ -789,41 +787,62 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 200px;
+  min-width: 100px;
+  margin: 0 15px;
+}
+
+.grupo-img img {
+  width: 70px;
+  margin: 5px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ccc;
 }
 
 .signo {
   font-size: 8rem;
   font-weight: bold;
-  color: #4caf50;
+  margin: 0 10px;
+  align-self: center;
 }
 
-.opciones {
+#opcionesNumeros {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 8px;        /* espacio entre botones */
+  flex-wrap: nowrap; /* para que estén en una sola línea */
   margin-top: 20px;
 }
 
-.opciones button {
-  font-size: 1.5rem;
-  padding: 10px 20px;
-  border: 2px solid #4caf50;
-  background-color: var(--color-texto);
-  border-radius: 10px;
+#opcionesNumeros button {
+  font-size: 2rem;     
+  padding: 6px 12px;    
+  min-width: 50px;      
+  border-radius: 6px;
+  border: 1px solid #007bff;
+  background: #007bff;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box; 
+}
+#opcionesNumeros button:hover {
+  background-color: #0056b3;
 }
 
-.opciones button:hover {
-  background-color: #c8e6c9;
-}
 
-.mensaje {
-  text-align: center;
-  font-size: 1.4rem;
+
+#mensaje {
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 15px;
+  min-height: 1.5em;
+  color: #333;
+}
+
+#btnVolver {
+  margin-top: 25px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 

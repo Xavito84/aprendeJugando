@@ -1,6 +1,11 @@
 const nombre = localStorage.getItem('usuario') || 'Peque';
 const progresoKey = 'progresoNivel4_' + nombre;
-let progreso = JSON.parse(localStorage.getItem(progresoKey)) || { contar: false, puzzle: false, memory: false, letras: false };
+let progreso = JSON.parse(localStorage.getItem(progresoKey)) || {
+  contar: false,
+  puzzle: false,
+  memory: false,
+  letras: false
+};
 
 const grupo1 = document.getElementById('grupo1');
 const grupo2 = document.getElementById('grupo2');
@@ -19,7 +24,8 @@ fetch('../data/datos-contar.json')
   .then(data => {
     datos = data;
     siguientePregunta();
-  });
+  })
+  .catch(err => console.error('Error cargando datos:', err));
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -51,7 +57,7 @@ function siguientePregunta() {
   let idx2;
   do {
     idx2 = getRandomInt(0, datos.length - 1);
-  } while (idx1 === idx2);
+  } while (idx2 === idx1);
 
   const item1 = datos[idx1];
   const item2 = datos[idx2];
@@ -63,13 +69,14 @@ function siguientePregunta() {
   dibujarGrupo(grupo1, num1, item1.imagen, item1.nombre);
   dibujarGrupo(grupo2, num2, item2.imagen, item2.nombre);
 
-  // Generar 3 opciones
+  // Generar opciones únicas (3 en total)
   const opciones = new Set([total]);
   while (opciones.size < 3) {
     opciones.add(getRandomInt(Math.max(2, total - 3), total + 3));
   }
 
   const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
+
   opcionesNumeros.innerHTML = '';
   mensaje.textContent = '';
 
