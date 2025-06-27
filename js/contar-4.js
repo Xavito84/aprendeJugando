@@ -1,21 +1,38 @@
-const nombre = localStorage.getItem('usuario') || 'Peque';
-const progresoKey = 'progresoNivel4_' + nombre;
-let progreso = JSON.parse(localStorage.getItem(progresoKey)) || {
-  contar: false,
-  puzzle: false,
-  memory: false,
-  letras: false
-};
-
 const grupo1 = document.getElementById('grupo1');
 const grupo2 = document.getElementById('grupo2');
 const opcionesNumeros = document.getElementById('opcionesNumeros');
 const mensaje = document.getElementById('mensaje');
 const aplauso = document.getElementById('aplauso');
 
+const nivel = 4;
+const juego = 'contar';
 let datos = [];
 let aciertos = 0;
 const maxAciertos = 10;
+
+// obtener usuario consistente
+function obtenerUsuario() {
+  const userRaw = localStorage.getItem('usuario');
+  try {
+    return JSON.parse(userRaw) || { nombre: 'Peque' };
+  } catch {
+    return { nombre: 'Peque' };
+  }
+}
+
+// completarJuego unificado
+function completarJuego(nivel, juego) {
+  const usuario = obtenerUsuario();
+  const claveProgreso = `progresoNivel${nivel}_${usuario.nombre}`;
+  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+    contar: false,
+    puzzle: false,
+    memory: false,
+    letras: false
+  };
+  progreso[juego] = true;
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+}
 
 window.addEventListener("click", () => aplauso.play().catch(() => {}), { once: true });
 
@@ -46,8 +63,7 @@ function dibujarGrupo(contenedor, cantidad, src, alt) {
 function siguientePregunta() {
   if (aciertos >= maxAciertos) {
     mensaje.textContent = "¡Juego completado! Redirigiendo...";
-    progreso.contar = true;
-    localStorage.setItem(progresoKey, JSON.stringify(progreso));
+    completarJuego(nivel, juego);
     setTimeout(() => window.location.href = "../niveles/nivel-4.html", 2000);
     return;
   }
