@@ -1,19 +1,25 @@
 // progresoNivel4.js
 
-// Obtener el objeto usuario desde localStorage
-const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+// Obtener usuario desde localStorage o usar 'Peque' por defecto
+const user = (() => {
+  try {
+    return JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+  } catch {
+    return { nombre: 'Peque' };
+  }
+})();
 const nombre = user.nombre;
 
-// Mostrar el nombre en el saludo (en la página)
+// Mostrar nombre en el elemento #nombreUsuario si existe
 const nombreUsuarioElem = document.getElementById('nombreUsuario');
 if (nombreUsuarioElem) {
   nombreUsuarioElem.textContent = nombre;
 }
 
-// Crear una clave única por usuario
-const claveProgreso = 'progresoNivel4_' + nombre;
+// Clave única para el progreso del usuario en nivel 4
+const claveProgreso = `progresoNivel4_${nombre}`;
 
-// Cargar progreso del nivel 4 o crear uno nuevo si no existe
+// Cargar progreso desde localStorage o crear inicial
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   letras: false,
   puzzle: false,
@@ -21,9 +27,10 @@ let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   contar: false
 };
 
-// Función para actualizar la visualización del progreso
+// Actualiza visualmente el progreso en la página
 function actualizarProgreso() {
   const juegos = ['letras', 'puzzle', 'memory', 'contar'];
+
   juegos.forEach(juego => {
     const elem = document.getElementById('progreso-' + juego);
     if (elem) {
@@ -31,7 +38,6 @@ function actualizarProgreso() {
     }
   });
 
-  // Total completados / total juegos
   const totalCompletados = Object.values(progreso).filter(v => v).length;
   const totalJuegos = Object.keys(progreso).length;
 
@@ -47,13 +53,12 @@ function actualizarProgreso() {
 }
 actualizarProgreso();
 
-// Función para navegar a un juego (asumiendo nombres de archivo estándar)
+// Función para navegar a un juego
 function irAJuego(juego) {
- window.location.href = `../juegos/${juego}-4.html`;
-
+  window.location.href = `../juegos/${juego}-4.html`;
 }
 
-// Función para marcar un juego como completado
+// Función para marcar un juego como completado y actualizar progreso
 function marcarJuegoCompletado(juego) {
   if (progreso.hasOwnProperty(juego)) {
     progreso[juego] = true;
@@ -64,7 +69,7 @@ function marcarJuegoCompletado(juego) {
   }
 }
 
-// Función para cerrar sesión
+// Función para cerrar sesión (limpia todo localStorage y redirige)
 function cerrarSesion() {
   if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
     localStorage.clear();
@@ -73,7 +78,7 @@ function cerrarSesion() {
   }
 }
 
-// Exponer funciones para que se puedan usar en HTML
+// Exponer funciones para uso en HTML
 window.irAJuego = irAJuego;
-window.cerrarSesion = cerrarSesion;
 window.marcarJuegoCompletado = marcarJuegoCompletado;
+window.cerrarSesion = cerrarSesion;

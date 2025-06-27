@@ -104,13 +104,13 @@ function checkForMatch() {
     card2.style.pointerEvents = 'none';
 
     if (matchedPairs === 10) {
-      message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
+      completarJuego(nivel, juego);  // Guarda el progreso primero
 
-      completarJuego(nivel, juego);
+      message.textContent = '🎉 ¡Felicidades! Has encontrado todas las parejas. 🎉';
 
       setTimeout(() => {
         window.location.href = '../niveles/nivel-4.html';
-      }, 2000);
+      }, 1500);
     }
   } else {
     card1.classList.remove('flipped');
