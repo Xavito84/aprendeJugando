@@ -1,3 +1,34 @@
+const nivel = 3;
+
+// --- Obtener usuario ---
+function obtenerUsuario() {
+  const userRaw = localStorage.getItem('usuario');
+  try {
+    return JSON.parse(userRaw) || { nombre: 'Peque' };
+  } catch {
+    return { nombre: 'Peque' };
+  }
+}
+
+// --- Guardar progreso de forma unificada ---
+function completarJuego(nivel, juego) {
+  const user = obtenerUsuario();
+  const claveProgreso = `progresoNivel${nivel}_` + user.nombre;
+
+  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+    colores: false,
+    formas: false,
+    letras: false,
+    memory: false,
+    contar: false
+  };
+
+  progreso[juego] = true;
+  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+}
+
+// --------------------------------------------------------
+
 let items = [];
 
 fetch('../data/datos-letras.json')
@@ -45,24 +76,7 @@ function mostrarPregunta() {
     feedback.textContent = "🎉 ¡Has acertado 10 letras! 🎉";
     feedback.style.color = 'green';
 
-    const nombre = localStorage.getItem('usuario') || 'Peque';
-    const claveProgreso = 'progresoNivel3_' + nombre;
-
-    // Obtener progreso actual o crear uno nuevo por defecto
-    let progreso = localStorage.getItem(claveProgreso);
-    if (progreso) {
-      try {
-        progreso = JSON.parse(progreso);
-      } catch {
-        progreso = { colores: false, formas: false, letras: false, memory: false };
-      }
-    } else {
-      progreso = { colores: false, formas: false, letras: false, memory: false };
-    }
-
-    // Actualizar el progreso de letras
-    progreso.letras = true;
-    localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+    completarJuego(3, 'letras');
 
     setTimeout(() => {
       window.location.href = '../niveles/nivel-3.html';
@@ -97,7 +111,7 @@ function mostrarPregunta() {
   allOptions.forEach(option => {
     const div = document.createElement('div');
     div.className = 'option';
-    div.tabIndex = 0; // accesibilidad
+    div.tabIndex = 0;
     div.innerHTML = `<img src="${option.img}" alt="${option.word}" style="width: 220px; height: 180px; object-fit: contain; border-radius: 14px;">`;
     div.onclick = () => checkAnswer(option.letter);
     optionsDiv.appendChild(div);
