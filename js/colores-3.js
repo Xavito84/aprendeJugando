@@ -1,32 +1,34 @@
-// Obtener usuario y clave progreso
-const userRaw = localStorage.getItem('usuario');
-let nombre;
-try {
-  nombre = userRaw ? JSON.parse(userRaw).nombre : 'Peque';
-} catch {
-  nombre = 'Peque';
-}
-const claveProgreso = 'progresoNivel3_' + nombre;
+const nivel = 3;
 
-// Función para obtener progreso local (si existe) o valor por defecto
-function obtenerProgreso() {
-  const progresoGuardado = localStorage.getItem(claveProgreso);
-  if (progresoGuardado) {
-    try {
-      return JSON.parse(progresoGuardado);
-    } catch {
-      return { colores: false, formas: false, letras: false, memory: false, contar: false };
-    }
+// --- Obtener usuario ---
+function obtenerUsuario() {
+  const userRaw = localStorage.getItem('usuario');
+  try {
+    return JSON.parse(userRaw) || { nombre: 'Peque' };
+  } catch {
+    return { nombre: 'Peque' };
   }
-  return { colores: false, formas: false, letras: false, memory: false, contar: false };
 }
 
-// Función para guardar progreso localmente
-function guardarProgreso(progreso) {
+// --- Guardar progreso de forma unificada ---
+function completarJuego(nivel, juego) {
+  const user = obtenerUsuario();
+  const claveProgreso = `progresoNivel${nivel}_` + user.nombre;
+
+  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
+    colores: false,
+    formas: false,
+    letras: false,
+    memory: false,
+    contar: false
+  };
+
+  progreso[juego] = true;
   localStorage.setItem(claveProgreso, JSON.stringify(progreso));
 }
 
-// Variables del juego
+// --------------------------------------------------------
+
 let colores = [];
 let aciertos = 0;
 const totalAciertos = 10;
@@ -37,17 +39,15 @@ const opcionesDiv = document.getElementById('opciones');
 const mensaje = document.getElementById('mensaje');
 const sonidoAplauso = document.getElementById('aplauso');
 
-let progreso = obtenerProgreso();
-
 sonidoAplauso.volume = 1;
 sonidoAplauso.muted = false;
 
-// Para que el audio se pueda reproducir después del primer click (restricciones navegadores)
+// Para que el audio se pueda reproducir después del primer click
 window.addEventListener("click", () => {
   sonidoAplauso.play().catch(() => {});
 }, { once: true });
 
-// Función para mezclar arrays (Fisher-Yates)
+// Fisher-Yates
 function mezclar(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -57,12 +57,10 @@ function mezclar(array) {
 }
 
 function mostrarPregunta() {
-  // Fin del juego
   if (coloresRestantes.length === 0 || aciertos >= totalAciertos) {
     mensaje.innerHTML = `<strong>🎉 ¡Completaste el juego!</strong><br/>Redirigiendo...`;
 
-    progreso.colores = true;
-    guardarProgreso(progreso);
+    completarJuego(3, 'colores');
 
     setTimeout(() => {
       window.location.href = '../niveles/nivel-3.html';
@@ -70,10 +68,8 @@ function mostrarPregunta() {
     return;
   }
 
-  // Elegir color correcto
   const correcta = coloresRestantes[Math.floor(Math.random() * coloresRestantes.length)];
 
-  // Seleccionar otras dos opciones incorrectas
   let opciones = colores.filter(c => c.nombre !== correcta.nombre);
   opciones = mezclar(opciones).slice(0, 2);
   opciones.push(correcta);
@@ -92,7 +88,6 @@ function mostrarPregunta() {
     div.style.cursor = 'pointer';
     div.style.margin = '15px';
     div.style.backgroundColor = color.color;
-    div.textContent = '';
 
     div.onclick = () => {
       if (color.nombre === correcta.nombre) {
@@ -122,12 +117,12 @@ function mostrarPregunta() {
   });
 }
 
-// Botón volver al nivel 3
+// Botón volver
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-3.html';
 };
 
-// Botón reiniciar juego
+// Botón reiniciar
 document.getElementById('btnReiniciar').onclick = () => {
   aciertos = 0;
   coloresRestantes = [...colores];
@@ -135,7 +130,7 @@ document.getElementById('btnReiniciar').onclick = () => {
   mostrarPregunta();
 };
 
-// Cargar colores desde JSON y empezar el juego
+// cargar colores
 fetch('../data/datos-colores.json')
   .then(response => response.json())
   .then(data => {

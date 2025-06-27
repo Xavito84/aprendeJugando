@@ -27,7 +27,7 @@ function completarJuego(nivel, juego) {
   localStorage.setItem(claveProgreso, JSON.stringify(progreso));
 }
 
-// --------------------------------------------------------
+
 
 let items = [];
 
@@ -159,3 +159,4 @@ document.getElementById('btnReiniciar').onclick = () => {
 document.getElementById('btnVolver').onclick = () => {
   window.location.href = '../niveles/nivel-3.html';
 };
+;
