@@ -125,18 +125,4 @@ btnVolver.onclick = () => {
   window.location.href = "../niveles/nivel-5.html";
 };
 
-function completarJuego(nivel, juego) {
-  const user = obtenerUsuario();
-  const claveProgreso = `progresoNivel${nivel}_` + user.nombre;
-  
-  let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
-    colores: false,
-    formas: false,
-    letras: false,
-    memory: false,
-    contar: false
-  };
-  
-  progreso[juego] = true;
-  localStorage.setItem(claveProgreso, JSON.stringify(progreso));
-}
+
