@@ -62,8 +62,9 @@ function dibujarGrupo(contenedor, cantidad, src, alt) {
 
 function siguientePregunta() {
   if (aciertos >= maxAciertos) {
+    completarJuego(nivel, juego);  // Guardar progreso antes de mostrar mensaje y redirigir
     mensaje.textContent = "¡Juego completado! Redirigiendo...";
-    completarJuego(nivel, juego);
+
     setTimeout(() => window.location.href = "../niveles/nivel-4.html", 2000);
     return;
   }

@@ -1,6 +1,11 @@
-// Obtener nombre del usuario y progreso guardado
-const nombre = localStorage.getItem('usuario') || 'Peque';
+// Obtener objeto usuario desde localStorage y su nombre
+const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+const nombre = user.nombre;
+
+// Clave única para progreso nivel 5
 const progresoKey = 'progresoNivel5_' + nombre;
+
+// Cargar progreso o inicializar
 let progreso = JSON.parse(localStorage.getItem(progresoKey)) || {
   contar: false,
   puzzle: false,
@@ -21,7 +26,7 @@ let datos = [];
 let aciertos = 0;
 const maxAciertos = 10;
 
-// Activar sonido solo al primer clic por política del navegador
+// Activar sonido solo al primer clic (política navegador)
 window.addEventListener("click", () => aplauso.play().catch(() => {}), { once: true });
 
 // Cargar datos JSON con objetos e imágenes
@@ -36,7 +41,7 @@ fetch('../data/datos-contar.json')
     mensaje.textContent = 'No se pudo cargar el juego.';
   });
 
-// Función para generar número aleatorio entero entre min y max (inclusive)
+// Generar número aleatorio entero entre min y max (inclusive)
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -124,5 +129,3 @@ function siguientePregunta() {
 btnVolver.onclick = () => {
   window.location.href = "../niveles/nivel-5.html";
 };
-
-

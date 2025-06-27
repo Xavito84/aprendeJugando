@@ -43,6 +43,17 @@ function irAJuego(juego) {
   window.location.href = `../juegos/${juego}-5.html`;
 }
 
+// Función para marcar un juego como completado (útil si quieres actualizar el progreso desde un juego)
+function marcarJuegoCompletado(juego) {
+  if (progreso.hasOwnProperty(juego)) {
+    progreso[juego] = true;
+    localStorage.setItem(claveProgreso, JSON.stringify(progreso));
+    actualizarProgreso();
+  } else {
+    console.warn(`El juego "${juego}" no está definido en el progreso.`);
+  }
+}
+
 // Cerrar sesión limpiando localStorage
 function cerrarSesion() {
   if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
@@ -55,3 +66,4 @@ function cerrarSesion() {
 // Exportar funciones para uso en HTML
 window.irAJuego = irAJuego;
 window.cerrarSesion = cerrarSesion;
+window.marcarJuegoCompletado = marcarJuegoCompletado;

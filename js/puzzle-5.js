@@ -4,10 +4,10 @@ const mensaje = document.getElementById("mensaje");
 const volverBtn = document.getElementById("btnVolver");
 const reiniciarBtn = document.getElementById("btnReiniciar");
 
-let piezasColocadas = 0;
-let puzzleActual = null;
+// Obtener nombre usuario desde JSON en localStorage o valor por defecto
+const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
+const nombreUsuario = user.nombre;
 
-const nombreUsuario = localStorage.getItem('usuario') || 'Peque';
 const claveProgreso = 'progresoNivel5_' + nombreUsuario;
 
 let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
@@ -16,6 +16,9 @@ let progreso = JSON.parse(localStorage.getItem(claveProgreso)) || {
   memory: false,
   letras: false,
 };
+
+let piezasColocadas = 0;
+let puzzleActual = null;
 
 function guardarProgreso() {
   localStorage.setItem(claveProgreso, JSON.stringify(progreso));
@@ -89,7 +92,7 @@ function soltar(e) {
   const piezaId = e.dataTransfer.getData("text/plain");
   const src = e.dataTransfer.getData("src");
 
-  // Si ya hay una pieza en la zona, devolverla al contenedor
+  // Si ya hay pieza en la zona, devolverla al contenedor
   if (zona.firstChild) {
     const piezaAnterior = zona.firstChild;
     const imgDevuelta = document.createElement("img");
@@ -107,14 +110,14 @@ function soltar(e) {
     zona.innerHTML = "";
   }
 
-  // Colocar la pieza soltada en la zona
+  // Colocar pieza soltada en la zona
   const img = document.createElement("img");
   img.src = src;
   img.classList.add("pieza-colocada");
   img.dataset.piezaColocadaId = piezaId;
   zona.appendChild(img);
 
-  // Remover la pieza original del contenedor
+  // Remover pieza original del contenedor
   const piezaOriginal = contenedorPuzzle.querySelector(`[data-pieza="${piezaId}"]`);
   if (piezaOriginal) piezaOriginal.remove();
 
@@ -123,12 +126,10 @@ function soltar(e) {
     piezasColocadas++;
   }
 
-  // Revisar si terminó el puzzle
+  // Revisar si se completó el puzzle
   if (piezasColocadas === 16) {
     mensaje.textContent = "🎉 ¡Felicidades! Has completado el puzzle.";
-
     marcarModuloCompletado('puzzle');
-
     setTimeout(() => {
       window.location.href = "../niveles/nivel-5.html";
     }, 3000);
