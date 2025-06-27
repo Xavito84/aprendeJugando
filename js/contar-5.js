@@ -1,11 +1,19 @@
-// Obtener usuario del localStorage o usar nombre por defecto
-const user = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Peque' };
-const nombre = user.nombre;
+// Leer nombre de usuario de forma segura desde localStorage
+let nombre = 'Peque';
+try {
+  const userData = localStorage.getItem('usuario');
+  if (userData) {
+    const userObj = JSON.parse(userData);
+    nombre = userObj.nombre || userData || 'Peque';
+  }
+} catch {
+  nombre = localStorage.getItem('usuario') || 'Peque';
+}
 
-// Clave única para el progreso del nivel 5 y usuario
+// Clave única para progreso
 const progresoKey = 'progresoNivel5_' + nombre;
 
-// Cargar progreso o inicializarlo
+// Cargar progreso o inicializar
 let progreso = JSON.parse(localStorage.getItem(progresoKey)) || {
   contar: false,
   puzzle: false,
@@ -21,20 +29,21 @@ const mensaje = document.getElementById('mensaje');
 const aplauso = document.getElementById('aplauso');
 const signoDiv = document.getElementById('signo');
 const btnVolver = document.getElementById('btnVolver');
-const progresoContarElem = document.getElementById('progreso-contar'); // Elemento donde mostrar check
+const progresoContarElem = document.getElementById('progreso-contar'); // Donde mostrar check
 
 let datos = [];
 let aciertos = 0;
 const maxAciertos = 10;
 
-// Activar sonido al primer clic para evitar bloqueo por políticas de navegador
+// Activar sonido al primer clic (política navegador)
 window.addEventListener("click", () => aplauso.play().catch(() => {}), { once: true });
 
-// Cargar datos desde JSON
+// Cargar datos JSON con objetos e imágenes
 fetch('../data/datos-contar.json')
   .then(res => res.json())
   .then(data => {
     datos = data;
+    console.log('Datos cargados:', datos);
     actualizarProgreso();
     siguientePregunta();
   })
@@ -43,7 +52,7 @@ fetch('../data/datos-contar.json')
     mensaje.textContent = 'No se pudo cargar el juego.';
   });
 
-// Función para actualizar el check de progreso en esta página
+// Función para mostrar check o cruz en el progreso
 function actualizarProgreso() {
   if (!progresoContarElem) return;
   if (progreso.contar) {
@@ -53,14 +62,15 @@ function actualizarProgreso() {
     progresoContarElem.textContent = '❌';
     progresoContarElem.style.color = 'red';
   }
+  console.log('Progreso actual:', progreso);
 }
 
-// Número aleatorio entre min y max, incluidos
+// Número aleatorio entero entre min y max (inclusive)
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Dibuja 'cantidad' imágenes en el contenedor dado
+// Dibujar imágenes en contenedor
 function dibujarGrupo(contenedor, cantidad, src, alt) {
   contenedor.innerHTML = '';
   for (let i = 0; i < cantidad; i++) {
@@ -73,18 +83,19 @@ function dibujarGrupo(contenedor, cantidad, src, alt) {
   }
 }
 
-// Genera siguiente pregunta con suma o resta aleatoria
+// Generar siguiente pregunta
 function siguientePregunta() {
   if (aciertos >= maxAciertos) {
     mensaje.textContent = "¡Juego completado! Redirigiendo...";
     progreso.contar = true;
     localStorage.setItem(progresoKey, JSON.stringify(progreso));
+    console.log('Progreso guardado:', JSON.parse(localStorage.getItem(progresoKey)));
     actualizarProgreso();
     setTimeout(() => window.location.href = "../niveles/nivel-5.html", 2000);
     return;
   }
 
-  // Elegir dos objetos diferentes
+  // Elegir dos objetos distintos
   let idx1 = getRandomInt(0, datos.length - 1);
   let idx2;
   do {
@@ -94,14 +105,14 @@ function siguientePregunta() {
   const item1 = datos[idx1];
   const item2 = datos[idx2];
 
-  // Elegir signo suma o resta
+  // Elegir suma o resta
   const signo = Math.random() < 0.5 ? '+' : '-';
   signoDiv.textContent = signo;
 
   let num1 = getRandomInt(item1.min, item1.max);
   let num2 = getRandomInt(item2.min, item2.max);
 
-  // En resta asegurar resultado no negativo
+  // Asegurar resultado no negativo en resta
   if (signo === '-' && num2 > num1) [num1, num2] = [num2, num1];
 
   dibujarGrupo(grupo1, num1, item1.imagen, item1.nombre);
@@ -109,7 +120,7 @@ function siguientePregunta() {
 
   const resultado = signo === '+' ? num1 + num2 : num1 - num2;
 
-  // Crear opciones únicas: resultado + 2 distracciones
+  // Crear opciones con resultado y dos distractores únicos
   const opciones = new Set([resultado]);
   while (opciones.size < 3) {
     const falsa = getRandomInt(Math.max(0, resultado - 3), resultado + 3);
